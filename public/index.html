@@ -1,0 +1,412 @@
+<title>ห้องซ้อมให้คำปรึกษา</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F5F5F7; --surface:#FFFFFF; --fill:#F2F2F4; --fill2:#E9E9EB;
+  --ink:#1D1D1F; --muted:#6E6E73; --faint:#AEAEB2; --hair:rgba(0,0,0,.08);
+  --blue:#0071E3; --blue-ink:#FFFFFF; --link:#0066CC;
+  --green:#34C759; --orange:#FF9500; --red:#FF3B30; --red-soft:#FFF1F0;
+  --bar:rgba(245,245,247,.72);
+  --shadow:0 2px 6px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.06);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Sukhumvit Set","IBM Plex Sans Thai","Helvetica Neue",sans-serif;
+  --display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Sukhumvit Set","IBM Plex Sans Thai","Helvetica Neue",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--bg)}
+body{color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-.005em}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hair)}
+.nav-in{max-width:1080px;margin:0 auto;padding-inline:16px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav b{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em}
+.nav .right{display:flex;align-items:center;gap:14px}
+.meta{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.page{max-width:1080px;margin:0 auto;padding-inline:16px;padding-block:0 64px;display:grid;gap:28px}
+.hero{padding-block:56px 8px;display:grid;gap:10px;text-align:center;justify-items:center}
+.eyebrow{font-size:14px;font-weight:600;color:var(--orange)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,6vw,56px);line-height:1.12;letter-spacing:-.025em;margin:0;text-wrap:balance}
+.lede{font-size:clamp(17px,2.2vw,21px);color:var(--muted);margin:0;max-width:34em;line-height:1.5;text-wrap:balance}
+.section-title{font-family:var(--display);font-size:24px;font-weight:600;letter-spacing:-.015em;margin:0}
+.cases{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:760px){.cases{grid-template-columns:1fr}}
+.case{all:unset;box-sizing:border-box;cursor:pointer;background:var(--surface);border-radius:20px;padding:20px 22px;display:grid;gap:6px;box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+.case:hover{transform:translateY(-2px)}
+.case:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.case[aria-pressed="true"]{box-shadow:0 0 0 2px var(--blue),var(--shadow)}
+.case .top{display:flex;justify-content:space-between;align-items:center}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:18px;color:#fff}
+.lvl{font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--fill)}
+.lvl.l1{color:var(--green)} .lvl.l2{color:var(--orange)} .lvl.l3{color:var(--red)}
+.case b{font-family:var(--display);font-size:19px;font-weight:600;letter-spacing:-.01em;margin-top:6px}
+.case small{color:var(--muted);font-size:14px;line-height:1.45}
+.offline{background:var(--surface);box-shadow:var(--shadow);border-radius:14px;padding:12px 18px;font-size:14px;color:var(--muted);text-align:center}
+.offline b{color:var(--ink)}
+.main{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start}
+@media (max-width:900px){.main{grid-template-columns:1fr}}
+.chat{background:var(--surface);border-radius:24px;box-shadow:var(--shadow);overflow:hidden;display:grid;grid-template-rows:auto 1fr auto;min-width:0}
+.chat-head{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:16px 16px 12px;border-bottom:1px solid var(--hair);position:relative}
+.chat-head .avatar{width:48px;height:48px;font-size:20px}
+.chat-head b{font-size:14px;font-weight:600}
+.chat-head span{font-size:12px;color:var(--muted)}
+.chat-head .reset{position:absolute;right:14px;top:14px}
+.log{padding:20px 16px;display:flex;flex-direction:column;gap:6px;height:min(52vh,480px);overflow-y:auto;scroll-behavior:smooth}
+.msg{max-width:76%;padding:9px 15px;border-radius:20px;white-space:pre-wrap;word-wrap:break-word;font-size:16px;line-height:1.45}
+.msg.client{align-self:flex-start;background:var(--fill2);color:var(--ink);border-bottom-left-radius:6px}
+.msg.me{align-self:flex-end;background:var(--blue);color:var(--blue-ink);border-bottom-right-radius:6px}
+.msg + .msg.client:not(:first-child), .msg + .msg.me{margin-top:0}
+.msg.me + .msg.client, .msg.client + .msg.me{margin-top:8px}
+.msg.sys{align-self:center;background:none;color:var(--muted);font-size:12px;font-weight:500;padding:2px 0 8px}
+.msg.err{align-self:center;background:var(--red-soft);color:var(--red);font-size:14px;border-radius:14px}
+.typing{display:inline-flex;gap:4px;padding:4px 0}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--faint)}
+@media (prefers-reduced-motion:no-preference){
+  .typing i{animation:blink 1.2s infinite}
+  .typing i:nth-child(2){animation-delay:.15s} .typing i:nth-child(3){animation-delay:.3s}
+  @keyframes blink{0%,60%,100%{opacity:.35;transform:none}30%{opacity:1;transform:translateY(-2px)}}
+  .msg{animation:pop .28s cubic-bezier(.2,.9,.3,1.2)}
+  @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+}
+form.compose{display:flex;align-items:flex-end;gap:10px;padding:12px 14px 14px;border-top:1px solid var(--hair)}
+textarea{flex:1;resize:none;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--fill2);border-radius:20px;padding:8px 16px;min-height:38px;max-height:140px;line-height:1.4}
+textarea::placeholder{color:var(--faint)}
+textarea:focus-visible{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 25%,transparent)}
+.send{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;background:var(--blue);display:grid;place-items:center;flex:none;margin-bottom:2px}
+.send svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.send:disabled{background:var(--fill2);cursor:default}
+.send:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn{font:inherit;font-size:14px;font-weight:500;border-radius:99px;padding:7px 16px;cursor:pointer;border:none;background:var(--blue);color:var(--blue-ink);transition:filter .2s}
+.btn:hover{filter:brightness(1.08)}
+.btn.plain{background:none;color:var(--link);padding:6px 4px}
+.btn.plain:hover{text-decoration:underline}
+.btn:disabled{opacity:.35;cursor:default;filter:none}
+.btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn.big{font-size:17px;padding:12px 26px}
+.side{display:grid;gap:16px}
+.card{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:20px 22px;display:grid;gap:10px}
+.card h3{font-family:var(--display);font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
+.facts{display:grid;gap:10px;margin:0}
+.facts div{display:grid;gap:1px}
+.facts dt{font-size:12px;color:var(--muted);font-weight:500}
+.facts dd{margin:0;font-size:15px;line-height:1.45}
+.goal{font-size:15px;line-height:1.5;margin:0}
+.fine{font-size:12px;color:var(--muted);line-height:1.55;margin:0;padding-inline:4px}
+.feedback{background:var(--surface);border-radius:24px;box-shadow:var(--shadow);padding:clamp(22px,4vw,40px);display:grid;gap:28px}
+.fb-head{display:grid;gap:8px}
+.fb-head h2{font-family:var(--display);font-size:clamp(26px,4vw,34px);font-weight:700;letter-spacing:-.02em;margin:0}
+.overall{margin:0;font-size:18px;color:var(--muted);max-width:40em;line-height:1.55}
+.scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.score{background:var(--fill);border-radius:16px;padding:16px;display:grid;gap:8px;align-content:start}
+.score .sk{font-size:13px;font-weight:600;color:var(--muted)}
+.score .num{font-family:var(--display);font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.score .num small{font-size:15px;color:var(--faint);font-weight:500}
+.segs{display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.segs i{height:6px;border-radius:3px;background:var(--fill2)}
+.segs.s1 i.on,.segs.s2 i.on{background:var(--red)}
+.segs.s3 i.on{background:var(--orange)}
+.segs.s4 i.on,.segs.s5 i.on{background:var(--green)}
+.score .sn{font-size:13px;color:var(--muted);line-height:1.45}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media (max-width:700px){.cols{grid-template-columns:1fr}}
+.cols h3,.redo-wrap h3{font-family:var(--display);font-size:19px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em}
+.cols ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.cols li{display:grid;grid-template-columns:20px 1fr;gap:8px;font-size:15px;line-height:1.5}
+.cols li::before{content:"";width:8px;height:8px;border-radius:50%;margin-top:.55em;justify-self:center}
+.good li::before{background:var(--green)} .miss li::before{background:var(--orange)}
+.riskbox{background:var(--red-soft);border-radius:16px;padding:14px 18px;font-size:15px;line-height:1.5}
+.riskbox b{color:var(--red)}
+.redo-wrap{display:grid;gap:10px}
+.redo{display:grid;gap:8px;padding:16px;border-radius:16px;background:var(--fill)}
+.redo .said{align-self:flex-end;justify-self:end;max-width:85%;background:var(--fill2);color:var(--muted);padding:8px 14px;border-radius:18px;font-size:15px;text-decoration:line-through;text-decoration-color:var(--faint)}
+.redo .try{justify-self:end;max-width:85%;background:var(--blue);color:#fff;padding:8px 14px;border-radius:18px;font-size:15px}
+.redo .why{font-size:13px;color:var(--muted)}
+.fb-foot{display:flex;justify-content:center}
+.thinking-line{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:17px}
+.gate{display:grid;gap:10px;justify-items:center}
+.gate-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.gate input{font:inherit;font-size:16px;color:var(--ink);background:var(--fill);border:1px solid var(--fill2);border-radius:99px;padding:7px 16px;min-width:0;width:200px}
+.gate input:focus-visible{outline:none;border-color:var(--blue)}
+.gate-msg{font-size:13px;color:var(--red)}
+footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin:0 auto;line-height:1.6}
+</style>
+
+<nav class="nav"><div class="nav-in">
+  <b>ห้องซ้อมให้คำปรึกษา</b>
+  <div class="right"><span class="meta" id="count"></span><button class="btn" id="fbBtn" type="button">ขอฟีดแบ็ก</button></div>
+</div></nav>
+
+<main class="page">
+  <header class="hero">
+    <div class="eyebrow">ต้นแบบ · สำหรับฝึกทักษะเท่านั้น</div>
+    <h1>ซ้อมให้คำปรึกษา<br>ก่อนเจอผู้รับบริการจริง</h1>
+    <p class="lede">คุยกับผู้รับบริการจำลองที่ตอบสนองต่อวิธีฟังของคุณ แล้วรับฟีดแบ็กทันทีจากผู้คุมการฝึก AI</p>
+  </header>
+
+  <form id="gate" class="offline gate" hidden>
+    <label for="code"><b>ใส่รหัสเข้าใช้</b> ที่ได้รับจากผู้ดูแล</label>
+    <div class="gate-row"><input id="code" type="text" autocomplete="off" placeholder="รหัสเข้าใช้"><button class="btn" type="submit">เข้าใช้</button></div>
+    <span id="gateMsg" class="gate-msg"></span>
+  </form>
+
+  <section style="display:grid;gap:14px" aria-label="เลือกเคส">
+    <h2 class="section-title">เลือกเคส</h2>
+    <div class="cases" id="cases"></div>
+  </section>
+
+  <div class="main">
+    <section class="chat" aria-label="ห้องสนทนา">
+      <div class="chat-head">
+        <div class="avatar" id="av"></div>
+        <b id="whoName"></b>
+        <span id="whoLine"></span>
+        <button class="btn plain reset" id="reset" type="button">เริ่มใหม่</button>
+      </div>
+      <div class="log" id="log" aria-live="polite"></div>
+      <form class="compose" id="compose">
+        <label for="input" style="position:absolute;left:-9999px">ข้อความของคุณ</label>
+        <textarea id="input" rows="1" placeholder="พิมพ์สิ่งที่คุณจะพูด…"></textarea>
+        <button class="send" id="send" type="submit" aria-label="ส่ง"><svg viewBox="0 0 16 16"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg></button>
+      </form>
+    </section>
+
+    <aside class="side">
+      <section class="card" id="brief" aria-live="polite"></section>
+      <p class="fine">ผู้รับบริการในห้องนี้เป็นตัวละครสมมติทั้งหมด ห้ามใช้กับผู้รับบริการจริง ถ้าคุณเองกำลังรู้สึกไม่ไหว โทรสายด่วนสุขภาพจิต 1323 ได้ตลอด 24 ชั่วโมง</p>
+    </aside>
+  </div>
+
+  <section class="feedback" id="feedback" hidden aria-live="polite"></section>
+
+  <footer>ต้นแบบเพื่อการฝึกทักษะ ใช้ AI สวมบทผู้รับบริการและประเมินการสนทนา ห้ามพิมพ์ชื่อหรือข้อมูลของผู้รับบริการจริงลงในหน้านี้ เนื้อหาเคสและเกณฑ์ประเมินอยู่ระหว่างให้นักจิตวิทยาตรวจทาน</footer>
+</main>
+
+<script>
+const CASES = [
+ {
+  "id": "burnout",
+  "level": 1,
+  "levelLabel": "เริ่มต้น",
+  "name": "คุณมายด์",
+  "initial": "ม",
+  "age": 29,
+  "job": "พนักงานการตลาดบริษัทเอเจนซี่ กรุงเทพฯ",
+  "topic": "เครียดจากงาน หมดไฟ",
+  "surface": "มาเพราะหัวหน้าแนะนำ บอกว่านอนไม่ค่อยหลับ ตื่นมาไม่อยากไปทำงาน",
+  "goal": "สร้างสัมพันธภาพ ใช้คำถามปลายเปิด และสะท้อนความรู้สึก ให้ผู้รับบริการเล่าสิ่งที่ซ่อนอยู่",
+  "opening": "สวัสดีค่ะ… จริงๆ ก็ไม่แน่ใจเหมือนกันว่าต้องมาไหม หัวหน้าเขาแนะนำมาน่ะค่ะ ช่วงนี้แค่นอนไม่ค่อยหลับเฉยๆ"
+ },
+ {
+  "id": "lowmood",
+  "level": 3,
+  "levelLabel": "ท้าทาย",
+  "name": "คุณต้น",
+  "initial": "ต",
+  "age": 21,
+  "job": "นักศึกษาวิศวกรรม ปี 3 ต่างจังหวัด",
+  "topic": "อารมณ์ซึมเศร้า ประเมินความเสี่ยง",
+  "surface": "ทักมาช่วงดึกผ่านบริการปรึกษาของมหาวิทยาลัย บอกว่าเรียนไม่รู้เรื่อง ไม่อยากทำอะไร",
+  "goal": "รับฟังโดยไม่รีบแก้ปัญหา สังเกตสัญญาณเสี่ยง และถามเรื่องความคิดทำร้ายตัวเองอย่างตรงไปตรงมาและอ่อนโยน",
+  "opening": "ผมก็ไม่รู้จะเริ่มยังไงครับ ช่วงนี้มันเหนื่อยไปหมด เรียนก็ไม่รู้เรื่อง ไม่อยากทำอะไรเลย"
+ },
+ {
+  "id": "family",
+  "level": 2,
+  "levelLabel": "กลาง",
+  "name": "คุณสุดา",
+  "initial": "ส",
+  "age": 46,
+  "job": "เจ้าของร้านขายของชำ นนทบุรี",
+  "topic": "ขัดแย้งในครอบครัว ลูกวัยรุ่น",
+  "surface": "มาปรึกษาเรื่องลูกสาวอายุ 16 ที่ไม่ยอมคุย ขังตัวอยู่ในห้อง อยากให้ช่วย 'ทำให้ลูกเชื่อฟัง'",
+  "goal": "รับมือกับผู้รับบริการที่มาพร้อมความคาดหวังให้แก้ที่คนอื่น ใช้การสะท้อนและคำถามช่วยให้เห็นมุมของตัวเอง",
+  "opening": "คือพี่มาเรื่องลูกสาวนะคะ อายุสิบหกแล้ว ดื้อมาก ไม่พูดกับพี่เลย ขังตัวอยู่แต่ในห้อง หมอช่วยบอกหน่อยว่าต้องทำยังไงให้ลูกเชื่อฟัง"
+ }
+];
+const HUES = {burnout:"linear-gradient(135deg,#FF9F0A,#FF6B6B)", lowmood:"linear-gradient(135deg,#5E5CE6,#0A84FF)", family:"linear-gradient(135deg,#30D158,#00A6A6)"};
+const $ = (id) => document.getElementById(id);
+let current = CASES[0];
+let turns = [];
+let busy = false;
+let accessCode = "";
+try { accessCode = localStorage.getItem("prCode") || ""; } catch {}
+
+function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function avatar(node, c){ node.textContent = c.initial; node.style.background = HUES[c.id]; }
+
+function renderCases(){
+  const box = $("cases"); box.textContent = "";
+  for (const c of CASES){
+    const b = el("button", "case"); b.type = "button"; b.setAttribute("aria-pressed", c.id === current.id);
+    const top = el("div", "top"); const av = el("div", "avatar"); avatar(av, c);
+    top.append(av, el("span", "lvl l" + c.level, c.levelLabel));
+    b.append(top, el("b", null, `${c.name}, ${c.age}`), el("small", null, c.topic));
+    b.onclick = () => { if (busy) return; current = c; start(); $("log").scrollIntoView({behavior:"smooth", block:"center"}); };
+    box.append(b);
+  }
+}
+
+function renderBrief(){
+  const c = current, br = $("brief"); br.textContent = "";
+  br.append(el("h3", null, "แฟ้มเคส"));
+  const dl = el("dl", "facts");
+  for (const [k, v] of [["ชื่อ", `${c.name} อายุ ${c.age} ปี`], ["อาชีพ", c.job], ["ที่มา", c.surface]]){
+    const d = el("div"); d.append(el("dt", null, k), el("dd", null, v)); dl.append(d);
+  }
+  br.append(dl);
+  const g = el("div"); g.style.cssText = "display:grid;gap:4px;padding-top:10px;border-top:1px solid var(--hair)";
+  g.append(el("h3", null, "เป้าหมายการฝึก"), el("p", "goal", c.goal));
+  br.append(g);
+  avatar($("av"), c);
+  $("whoName").textContent = c.name;
+  $("whoLine").textContent = `ผู้รับบริการจำลอง · ${c.topic}`;
+}
+
+function addMsg(kind, text){
+  const d = el("div", "msg " + kind, text);
+  $("log").append(d); $("log").scrollTop = $("log").scrollHeight;
+  return d;
+}
+function typing(){
+  const d = el("div", "msg client"); const t = el("span", "typing"); t.append(el("i"), el("i"), el("i")); d.append(t);
+  d.setAttribute("aria-label", "กำลังพิมพ์"); $("log").append(d); $("log").scrollTop = $("log").scrollHeight; return d;
+}
+
+function updateCount(){
+  const n = turns.filter(t => t.role === "user").length;
+  $("count").textContent = n ? `${n} ข้อความ` : "";
+  $("fbBtn").disabled = busy || n < 1;
+  $("send").disabled = busy;
+}
+
+function start(){
+  turns = [{role:"assistant", content: current.opening}];
+  $("log").textContent = "";
+  $("feedback").hidden = true;
+  addMsg("sys", "เริ่มเซสชัน · ผู้รับบริการเพิ่งนั่งลง");
+  addMsg("client", current.opening);
+  renderCases(); renderBrief(); updateCount();
+  $("input").value = "";
+}
+
+const errCopy = (code) => ({
+  rate_limited:"ตอนนี้มีคนใช้เยอะ โควตาฟรีเต็มชั่วคราว รอประมาณหนึ่งนาทีแล้วลองส่งใหม่",
+  refused:"ระบบไม่ตอบข้อความนี้ ลองเปลี่ยนวิธีพูดแล้วส่งใหม่",
+  invalid_json:"สร้างฟีดแบ็กไม่สำเร็จ กดขอฟีดแบ็กอีกครั้ง",
+  no_key:"ผู้ดูแลยังไม่ได้ตั้งค่า GEMINI_API_KEY",
+  bad_key:"API key ไม่ถูกต้อง ผู้ดูแลต้องตรวจสอบการตั้งค่า",
+  offline:"เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ ตรวจอินเทอร์เน็ตแล้วลองใหม่"
+}[code] || "ระบบขัดข้องชั่วคราว ลองส่งใหม่อีกครั้ง");
+
+async function api(path, body){
+  let r;
+  try{
+    r = await fetch(path, {method:"POST", headers:{"Content-Type":"application/json", "x-access-code":accessCode}, body:JSON.stringify(body)});
+  }catch{ throw {code:"offline"}; }
+  let data = {};
+  try { data = await r.json(); } catch {}
+  if (r.status === 401){ showGate(accessCode ? "รหัสไม่ถูกต้อง ลองอีกครั้ง" : ""); throw {code:"need_code"}; }
+  if (!r.ok) throw {code:data.error || "upstream"};
+  return data;
+}
+
+function showGate(msg){
+  $("gate").hidden = false; $("gateMsg").textContent = msg || "";
+  $("gate").scrollIntoView({behavior:"smooth", block:"center"}); $("code").focus({preventScroll:true});
+}
+$("gate").addEventListener("submit", (e) => {
+  e.preventDefault();
+  accessCode = $("code").value.trim();
+  try { localStorage.setItem("prCode", accessCode); } catch {}
+  $("gate").hidden = true;
+});
+
+async function send(text){
+  text = text.trim();
+  if (busy || !text) return;
+  busy = true; updateCount();
+  turns.push({role:"user", content:text});
+  addMsg("me", text);
+  const out = typing();
+  try{
+    const { reply } = await api("/api/chat", {caseId: current.id, turns});
+    out.textContent = reply;
+    turns.push({role:"assistant", content:reply});
+    $("log").scrollTop = $("log").scrollHeight;
+  }catch(e){
+    out.remove();
+    if (e?.code === "need_code"){ turns.pop(); $("log").lastElementChild?.remove(); $("input").value = text; }
+    else addMsg("err", errCopy(e?.code));
+  }finally{
+    busy = false; updateCount(); $("input").focus({preventScroll:true});
+  }
+}
+
+async function feedback(){
+  if (busy) return;
+  busy = true; updateCount();
+  const fb = $("feedback"); fb.hidden = false; fb.textContent = "";
+  const head = el("div", "fb-head"); head.append(el("h2", null, "ฟีดแบ็กจากผู้คุมการฝึก"));
+  const line = el("div", "thinking-line"); const t = el("span", "typing"); t.append(el("i"), el("i"), el("i"));
+  line.append(t, el("span", null, "กำลังอ่านบทสนทนาและประเมิน อาจใช้เวลาราวครึ่งนาที"));
+  head.append(line); fb.append(head);
+  fb.scrollIntoView({behavior:"smooth", block:"start"});
+  try{
+    const r = await api("/api/feedback", {caseId: current.id, turns});
+    renderFeedback(r);
+  }catch(e){
+    if (e?.code === "need_code") fb.hidden = true;
+    else line.textContent = errCopy(e?.code);
+  }finally{
+    busy = false; updateCount();
+  }
+}
+
+function renderFeedback(r){
+  const fb = $("feedback"); fb.textContent = "";
+  const head = el("div", "fb-head");
+  head.append(el("h2", null, "ฟีดแบ็กจากผู้คุมการฝึก"), el("p", "overall", String(r?.overall || "")));
+  fb.append(head);
+  const sc = el("div", "scores");
+  for (const s of (Array.isArray(r?.scores) ? r.scores : [])){
+    const n = Math.max(0, Math.min(5, Math.round(Number(s.score) || 0)));
+    const card = el("div", "score");
+    card.append(el("span", "sk", String(s.skill || "")));
+    const num = el("div", "num", String(n)); num.append(el("small", null, " / 5")); card.append(num);
+    const segs = el("div", "segs s" + n); segs.setAttribute("aria-hidden", "true");
+    for (let i = 1; i <= 5; i++) segs.append(el("i", i <= n ? "on" : ""));
+    card.append(segs, el("span", "sn", String(s.note || "")));
+    sc.append(card);
+  }
+  fb.append(sc);
+  if (r?.risk){ const rb = el("div", "riskbox"); rb.append(el("b", null, "การประเมินความเสี่ยง  "), document.createTextNode(String(r.risk))); fb.append(rb); }
+  const cols = el("div", "cols");
+  const a = el("div"); a.append(el("h3", null, "ทำได้ดี"));
+  const ul = el("ul", "good"); for (const s of (r?.strengths || [])) ul.append(el("li", null, String(s))); a.append(ul);
+  const b = el("div"); b.append(el("h3", null, "ยังไม่ได้เปิดเผย"));
+  const ul2 = el("ul", "miss"); for (const s of (r?.missed || [])) ul2.append(el("li", null, String(s))); b.append(ul2);
+  cols.append(a, b); fb.append(cols);
+  if ((r?.redo || []).length){
+    const w = el("div", "redo-wrap"); w.append(el("h3", null, "ลองพูดใหม่"));
+    for (const x of r.redo){
+      const box = el("div", "redo");
+      box.append(el("div", "said", String(x.said || "")), el("div", "try", String(x.try || "")));
+      if (x.why) box.append(el("span", "why", String(x.why)));
+      w.append(box);
+    }
+    fb.append(w);
+  }
+  const foot = el("div", "fb-foot");
+  const btn = el("button", "btn big", "ฝึกเคสนี้อีกรอบ"); btn.type = "button";
+  btn.onclick = () => { start(); $("log").scrollIntoView({behavior:"smooth", block:"center"}); $("input").focus({preventScroll:true}); };
+  foot.append(btn); fb.append(foot);
+}
+
+$("compose").addEventListener("submit", (e) => { e.preventDefault(); const v = $("input").value; $("input").value = ""; $("input").style.height = ""; send(v); });
+$("input").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing){ e.preventDefault(); $("compose").requestSubmit(); } });
+$("input").addEventListener("input", (e) => { e.target.style.height = "auto"; e.target.style.height = Math.min(140, e.target.scrollHeight) + "px"; });
+$("reset").onclick = () => { if (!busy) start(); };
+$("fbBtn").onclick = feedback;
+
+start();
+</script>
