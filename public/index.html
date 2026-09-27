@@ -129,18 +129,53 @@ textarea:focus-visible{outline:none;border-color:var(--blue);box-shadow:0 0 0 3p
 .gate input:focus-visible{outline:none;border-color:var(--blue)}
 .gate-msg{font-size:13px;color:var(--red)}
 footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin:0 auto;line-height:1.6}
+.pill{font-size:13px;font-weight:500;color:var(--muted);background:var(--fill);border-radius:99px;padding:4px 12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill.low{color:var(--orange)} .pill.out{color:var(--red)}
+.chat-note{font-size:12px;color:var(--muted);text-align:center;padding:0 16px 12px}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.32);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:grid;place-items:center;padding:16px;padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.sheet{background:var(--surface);border-radius:24px;box-shadow:0 24px 80px rgba(0,0,0,.25);width:min(560px,100%);max-height:100%;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden}
+.sheet-head{padding:26px 26px 8px;display:grid;gap:6px}
+.sheet-head h2{font-family:var(--display);font-size:26px;font-weight:700;letter-spacing:-.02em;margin:0}
+.sheet-head p{margin:0;color:var(--muted);font-size:15px;line-height:1.5}
+.sheet-body{overflow-y:auto;padding:8px 26px 8px;display:grid;gap:14px}
+.term{display:grid;gap:3px}
+.term h3{font-size:14px;font-weight:600;margin:0}
+.term p,.term li{font-size:14px;line-height:1.55;color:var(--muted);margin:0}
+.term ul{margin:0;padding-left:1.1em;display:grid;gap:2px}
+.warnline{background:var(--fill);border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.5;color:var(--ink)}
+.sheet-foot{padding:14px 26px 22px;border-top:1px solid var(--hair);display:grid;gap:12px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.45;cursor:pointer}
+.check input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--blue);flex:none}
+.sheet-foot .btn{width:100%;font-size:17px;padding:12px}
+.sheet-foot small{font-size:12px;color:var(--muted);text-align:center}
+.survey{border-top:1px solid var(--hair);padding-top:28px;display:grid;gap:18px}
+.survey h3{font-family:var(--display);font-size:21px;font-weight:600;margin:0;letter-spacing:-.01em}
+.survey .sub{margin:-12px 0 0;color:var(--muted);font-size:15px}
+.q{display:grid;gap:8px;border:0;padding:0;margin:0;min-width:0}
+.q legend,.q > label{font-size:15px;font-weight:500;padding:0;margin-bottom:8px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.seg span{display:inline-block;padding:7px 14px;border-radius:99px;background:var(--fill);font-size:14px;cursor:pointer;transition:background .15s,color .15s;min-width:40px;text-align:center}
+.seg input:checked + span{background:var(--blue);color:#fff}
+.seg input:focus-visible + span{outline:3px solid var(--blue);outline-offset:2px}
+.scale-ends{display:flex;justify-content:space-between;font-size:12px;color:var(--faint);max-width:280px}
+.survey textarea{width:100%;border-radius:14px;min-height:80px;background:var(--fill);border-color:transparent}
+.survey-foot{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.thanks{background:var(--fill);border-radius:16px;padding:18px;font-size:16px;text-align:center}
+.legal{display:grid;gap:4px}
 </style>
 
 <nav class="nav"><div class="nav-in">
   <b>ห้องซ้อมให้คำปรึกษา</b>
-  <div class="right"><span class="meta" id="count"></span><button class="btn" id="fbBtn" type="button">ขอฟีดแบ็ก</button></div>
+  <div class="right"><span class="meta" id="count"></span><span class="pill" id="rounds"></span><button class="btn" id="fbBtn" type="button">ประเมินการฝึก</button></div>
 </div></nav>
 
 <main class="page">
   <header class="hero">
     <div class="eyebrow">ต้นแบบ · สำหรับฝึกทักษะเท่านั้น</div>
     <h1>ซ้อมให้คำปรึกษา<br>ก่อนเจอผู้รับบริการจริง</h1>
-    <p class="lede">คุยกับผู้รับบริการจำลองที่ตอบสนองต่อวิธีฟังของคุณ แล้วรับฟีดแบ็กทันทีจากผู้คุมการฝึก AI</p>
+    <p class="lede">คุยกับผู้รับบริการจำลองที่ตอบสนองต่อวิธีฟังของคุณ แล้วกด "ประเมินการฝึก" เพื่อรับคะแนนและคำแนะนำจากผู้คุมการฝึก AI ทันที</p>
   </header>
 
   <form id="gate" class="offline gate" hidden>
@@ -168,6 +203,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
         <textarea id="input" rows="1" placeholder="พิมพ์สิ่งที่คุณจะพูด…"></textarea>
         <button class="send" id="send" type="submit" aria-label="ส่ง"><svg viewBox="0 0 16 16"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg></button>
       </form>
+      <div class="chat-note">ระบบนับ 1 รอบเมื่อคุณส่งข้อความแรกของแต่ละเคส</div>
     </section>
 
     <aside class="side">
@@ -178,8 +214,48 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
 
   <section class="feedback" id="feedback" hidden aria-live="polite"></section>
 
-  <footer>ต้นแบบเพื่อการฝึกทักษะ ใช้ AI สวมบทผู้รับบริการและประเมินการสนทนา ห้ามพิมพ์ชื่อหรือข้อมูลของผู้รับบริการจริงลงในหน้านี้ เนื้อหาเคสและเกณฑ์ประเมินอยู่ระหว่างให้นักจิตวิทยาตรวจทาน</footer>
+  <footer class="legal">
+    <span>ห้องซ้อมนี้เป็นเครื่องมือฝึกทักษะด้วย AI ไม่ใช่บริการบำบัดหรือคำแนะนำทางการแพทย์ ตัวละครทั้งหมดเป็นเรื่องสมมติ และผลประเมินอาจคลาดเคลื่อน ผู้ใช้รับผิดชอบการนำไปใช้เอง ห้ามพิมพ์ข้อมูลของผู้รับบริการจริง</span>
+    <span>เนื้อหาเคสอยู่ระหว่างให้นักจิตวิทยาตรวจทาน · <button class="btn plain" id="terms" type="button" style="font-size:12px;padding:0">ข้อตกลงและการใช้ข้อมูล</button></span>
+  </footer>
 </main>
+
+<div class="modal" id="consent" role="dialog" aria-modal="true" aria-labelledby="consentTitle" hidden>
+  <div class="sheet">
+    <div class="sheet-head">
+      <h2 id="consentTitle">ก่อนเริ่มฝึก</h2>
+      <p>โปรดอ่านข้อตกลงสั้นๆ นี้ก่อนใช้ห้องซ้อม</p>
+    </div>
+    <div class="sheet-body">
+      <div class="term">
+        <h3>ห้องซ้อมนี้คืออะไร</h3>
+        <p>เครื่องมือฝึกทักษะการให้คำปรึกษาด้วย AI สำหรับผู้เรียนและผู้ทำงานด้านจิตวิทยา ตัวละครทุกตัวเป็นเรื่องสมมติ ห้องซ้อมนี้ไม่ใช่บริการบำบัดหรือคำแนะนำทางการแพทย์ ผลประเมินจาก AI เป็นแนวทางเพื่อการเรียนรู้ อาจคลาดเคลื่อนได้ และไม่ใช่การรับรองทางวิชาชีพ</p>
+      </div>
+      <div class="term">
+        <h3>ข้อมูลที่เราเก็บ</h3>
+        <p>ข้อความที่คุณพิมพ์ระหว่างฝึก ผลประเมิน คำตอบแบบสอบถาม และรหัสอุปกรณ์แบบสุ่มที่ใช้นับรอบฝึก เราไม่ขอชื่อ อีเมล หรือเบอร์โทรศัพท์ของคุณ</p>
+      </div>
+      <div class="term">
+        <h3>เราใช้ข้อมูลเพื่อ</h3>
+        <ul>
+          <li>ปรับเคสให้สมจริงขึ้น และทำให้การประเมินแม่นยำขึ้น</li>
+          <li>พัฒนาเนื้อหาและหลักสูตรการฝึก</li>
+          <li>วิเคราะห์การใช้งานในภาพรวม และป้องกันการใช้งานผิดวัตถุประสงค์</li>
+        </ul>
+      </div>
+      <div class="term">
+        <h3>การเปิดเผยและการเก็บรักษา</h3>
+        <p>เราไม่ขายข้อมูล และไม่เปิดเผยข้อมูลที่ระบุตัวคุณได้ต่อบุคคลอื่น หากเผยแพร่ผลวิเคราะห์ จะเป็นภาพรวมที่ระบุตัวบุคคลไม่ได้เท่านั้น ข้อความระหว่างฝึกประมวลผลผ่านผู้ให้บริการ AI ภายนอก (Google Gemini) ซึ่งอาจนำไปใช้ปรับปรุงบริการของตน เราเก็บข้อมูลไม่เกิน 12 เดือน คุณขอดูหรือขอลบข้อมูลได้<span id="contactLine"> ผ่านช่องทางที่คุณได้รับลิงก์นี้</span></p>
+      </div>
+      <div class="warnline">ห้ามพิมพ์ชื่อหรือข้อมูลที่ระบุตัวผู้รับบริการจริงหรือบุคคลอื่นลงในห้องซ้อมนี้ ถ้าคุณเองกำลังรู้สึกไม่ไหว โทรสายด่วนสุขภาพจิต 1323 ได้ตลอด 24 ชั่วโมง กรณีฉุกเฉินโทร 1669</div>
+    </div>
+    <div class="sheet-foot">
+      <label class="check" for="agree"><input type="checkbox" id="agree"><span>ฉันอายุ 18 ปีขึ้นไป ได้อ่านข้อตกลงข้างต้น และยินยอมให้เก็บและใช้ข้อมูลตามวัตถุประสงค์ที่ระบุ</span></label>
+      <button class="btn" id="agreeBtn" type="button" disabled>ยินยอมและเริ่มฝึก</button>
+      <small>ถ้าไม่ยินยอม ปิดหน้านี้ได้เลย ระบบจะไม่เก็บข้อมูลใดๆ</small>
+    </div>
+  </div>
+</div>
 
 <script>
 const CASES = [
@@ -224,15 +300,45 @@ const CASES = [
  }
 ];
 const HUES = {burnout:"linear-gradient(135deg,#FF9F0A,#FF6B6B)", lowmood:"linear-gradient(135deg,#5E5CE6,#0A84FF)", family:"linear-gradient(135deg,#30D158,#00A6A6)"};
+const CONSENT_VERSION = "v1-2026-09";
 const $ = (id) => document.getElementById(id);
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v){ try { localStorage.setItem(k, v); } catch {} }
+};
+const rid = () => (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now().toString(36)).replace(/[^A-Za-z0-9_-]/g, "");
+const bkkDay = () => new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);
+
+let device = store.get("prDevice");
+if (!device || !/^[A-Za-z0-9_-]{8,64}$/.test(device)) { device = rid(); store.set("prDevice", device); }
+let accessCode = store.get("prCode") || "";
+let config = { limit: 3, remaining: null, stored: false, contact: "" };
 let current = CASES[0];
-let turns = [];
-let busy = false;
-let accessCode = "";
-try { accessCode = localStorage.getItem("prCode") || ""; } catch {}
+let turns = [], session = "", counted = false, busy = false, locked = false, consented = store.get("prConsent") === CONSENT_VERSION;
 
 function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 function avatar(node, c){ node.textContent = c.initial; node.style.background = HUES[c.id]; }
+
+// นับรอบฝั่งเบราว์เซอร์ ใช้แสดงผล และใช้จำกัดรอบเมื่อยังไม่ได้เชื่อมฐานข้อมูล
+function localRounds(){
+  let r; try { r = JSON.parse(store.get("prRounds") || "{}"); } catch { r = {}; }
+  if (r.day !== bkkDay()) r = { day: bkkDay(), sessions: [] };
+  return r;
+}
+function localUse(sid){
+  const r = localRounds();
+  if (!r.sessions.includes(sid)) r.sessions.push(sid);
+  store.set("prRounds", JSON.stringify(r));
+}
+function remaining(){
+  if (config.remaining != null) return config.remaining;
+  return Math.max(0, config.limit - localRounds().sessions.length);
+}
+function renderRounds(){
+  const n = remaining(), p = $("rounds");
+  p.textContent = n > 0 ? `เหลือ ${n}/${config.limit} รอบวันนี้` : "วันนี้ฝึกครบแล้ว";
+  p.className = "pill" + (n === 0 ? " out" : n === 1 ? " low" : "");
+}
 
 function renderCases(){
   const box = $("cases"); box.textContent = "";
@@ -275,12 +381,17 @@ function typing(){
 function updateCount(){
   const n = turns.filter(t => t.role === "user").length;
   $("count").textContent = n ? `${n} ข้อความ` : "";
-  $("fbBtn").disabled = busy || n < 1;
-  $("send").disabled = busy;
+  $("fbBtn").disabled = busy || n < 1 || !consented;
+  const blocked = busy || locked || !consented || (!counted && remaining() <= 0);
+  $("send").disabled = blocked;
+  $("input").disabled = locked || !consented || (!counted && remaining() <= 0);
+  $("input").placeholder = (!counted && remaining() <= 0) ? "วันนี้ฝึกครบแล้ว กลับมาใหม่พรุ่งนี้" : "พิมพ์สิ่งที่คุณจะพูด…";
+  renderRounds();
 }
 
 function start(){
   turns = [{role:"assistant", content: current.opening}];
+  session = rid(); counted = false; locked = false;
   $("log").textContent = "";
   $("feedback").hidden = true;
   addMsg("sys", "เริ่มเซสชัน · ผู้รับบริการเพิ่งนั่งลง");
@@ -289,10 +400,12 @@ function start(){
   $("input").value = "";
 }
 
+const limitMsg = () => `วันนี้คุณฝึกครบ ${config.limit} รอบแล้ว กลับมาฝึกต่อได้พรุ่งนี้ (รีเซ็ตเที่ยงคืนเวลาไทย)`;
 const errCopy = (code) => ({
   rate_limited:"ตอนนี้มีคนใช้เยอะ โควตาฟรีเต็มชั่วคราว รอประมาณหนึ่งนาทีแล้วลองส่งใหม่",
+  daily_limit: limitMsg(),
   refused:"ระบบไม่ตอบข้อความนี้ ลองเปลี่ยนวิธีพูดแล้วส่งใหม่",
-  invalid_json:"สร้างฟีดแบ็กไม่สำเร็จ กดขอฟีดแบ็กอีกครั้ง",
+  invalid_json:"ประเมินไม่สำเร็จ กดประเมินการฝึกอีกครั้ง",
   no_key:"ผู้ดูแลยังไม่ได้ตั้งค่า GEMINI_API_KEY",
   bad_key:"API key ไม่ถูกต้อง ผู้ดูแลต้องตรวจสอบการตั้งค่า",
   offline:"เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ ตรวจอินเทอร์เน็ตแล้วลองใหม่"
@@ -301,7 +414,7 @@ const errCopy = (code) => ({
 async function api(path, body){
   let r;
   try{
-    r = await fetch(path, {method:"POST", headers:{"Content-Type":"application/json", "x-access-code":accessCode}, body:JSON.stringify(body)});
+    r = await fetch(path, {method:"POST", headers:{"Content-Type":"application/json", "x-access-code":accessCode}, body:JSON.stringify({device, session, ...body})});
   }catch{ throw {code:"offline"}; }
   let data = {};
   try { data = await r.json(); } catch {}
@@ -316,29 +429,32 @@ function showGate(msg){
 }
 $("gate").addEventListener("submit", (e) => {
   e.preventDefault();
-  accessCode = $("code").value.trim();
-  try { localStorage.setItem("prCode", accessCode); } catch {}
+  accessCode = $("code").value.trim(); store.set("prCode", accessCode);
   $("gate").hidden = true;
 });
 
 async function send(text){
   text = text.trim();
-  if (busy || !text) return;
+  if (busy || !text || !consented) return;
+  if (!counted && remaining() <= 0){ addMsg("err", limitMsg()); return; }
   busy = true; updateCount();
   turns.push({role:"user", content:text});
   addMsg("me", text);
   const out = typing();
   try{
-    const { reply } = await api("/api/chat", {caseId: current.id, turns});
+    const { reply, remaining: left } = await api("/api/chat", {caseId: current.id, turns});
+    if (!counted){ counted = true; localUse(session); }
+    if (typeof left === "number") config.remaining = left;
     out.textContent = reply;
     turns.push({role:"assistant", content:reply});
     $("log").scrollTop = $("log").scrollHeight;
   }catch(e){
     out.remove();
     if (e?.code === "need_code"){ turns.pop(); $("log").lastElementChild?.remove(); $("input").value = text; }
+    else if (e?.code === "daily_limit"){ turns.pop(); $("log").lastElementChild?.remove(); config.remaining = 0; locked = !counted; addMsg("err", limitMsg()); }
     else addMsg("err", errCopy(e?.code));
   }finally{
-    busy = false; updateCount(); $("input").focus({preventScroll:true});
+    busy = false; updateCount(); if (!$("input").disabled) $("input").focus({preventScroll:true});
   }
 }
 
@@ -346,9 +462,9 @@ async function feedback(){
   if (busy) return;
   busy = true; updateCount();
   const fb = $("feedback"); fb.hidden = false; fb.textContent = "";
-  const head = el("div", "fb-head"); head.append(el("h2", null, "ฟีดแบ็กจากผู้คุมการฝึก"));
+  const head = el("div", "fb-head"); head.append(el("h2", null, "ผลประเมินการฝึก"));
   const line = el("div", "thinking-line"); const t = el("span", "typing"); t.append(el("i"), el("i"), el("i"));
-  line.append(t, el("span", null, "กำลังอ่านบทสนทนาและประเมิน อาจใช้เวลาราวครึ่งนาที"));
+  line.append(t, el("span", null, "ผู้คุมการฝึก AI กำลังอ่านบทสนทนาและประเมิน อาจใช้เวลาราวครึ่งนาที"));
   head.append(line); fb.append(head);
   fb.scrollIntoView({behavior:"smooth", block:"start"});
   try{
@@ -365,7 +481,7 @@ async function feedback(){
 function renderFeedback(r){
   const fb = $("feedback"); fb.textContent = "";
   const head = el("div", "fb-head");
-  head.append(el("h2", null, "ฟีดแบ็กจากผู้คุมการฝึก"), el("p", "overall", String(r?.overall || "")));
+  head.append(el("h2", null, "ผลประเมินการฝึก"), el("p", "overall", String(r?.overall || "")));
   fb.append(head);
   const sc = el("div", "scores");
   for (const s of (Array.isArray(r?.scores) ? r.scores : [])){
@@ -396,11 +512,72 @@ function renderFeedback(r){
     }
     fb.append(w);
   }
+  fb.append(el("p", "fine", "ผลประเมินนี้สร้างโดย AI เพื่อการเรียนรู้ อาจคลาดเคลื่อนได้ ควรปรึกษาอาจารย์หรือผู้คุมการฝึกประกอบ"));
+  if (config.stored) fb.append(surveyForm());
   const foot = el("div", "fb-foot");
-  const btn = el("button", "btn big", "ฝึกเคสนี้อีกรอบ"); btn.type = "button";
+  const left = remaining();
+  const btn = el("button", "btn big", left > 0 ? `เริ่มรอบใหม่ (เหลือ ${left} รอบ)` : "วันนี้ฝึกครบแล้ว"); btn.type = "button"; btn.disabled = left <= 0;
   btn.onclick = () => { start(); $("log").scrollIntoView({behavior:"smooth", block:"center"}); $("input").focus({preventScroll:true}); };
   foot.append(btn); fb.append(foot);
 }
+
+function seg(name, options){
+  const box = el("div", "seg");
+  options.forEach((o, i) => {
+    const lab = el("label"); const inp = el("input"); inp.type = "radio"; inp.name = name; inp.value = o; inp.id = `${name}-${i}`;
+    lab.append(inp, el("span", null, o)); box.append(lab);
+  });
+  return box;
+}
+function question(title, control, ends){
+  const f = el("fieldset", "q"); f.append(el("legend", null, title), control);
+  if (ends){ const e = el("div", "scale-ends"); e.append(el("span", null, ends[0]), el("span", null, ends[1])); f.append(e); }
+  return f;
+}
+function surveyForm(){
+  const form = el("form", "survey"); form.id = "survey";
+  form.append(el("h3", null, "ช่วยเราพัฒนาห้องซ้อม"), el("p", "sub", "ใช้เวลาไม่ถึงหนึ่งนาที คำตอบของคุณไม่ระบุตัวตน"));
+  form.append(
+    question("โดยรวมคุณพอใจห้องซ้อมนี้แค่ไหน", seg("rating", ["1","2","3","4","5"]), ["ไม่พอใจ", "พอใจมาก"]),
+    question("ผู้รับบริการจำลองสมจริงแค่ไหน", seg("realistic", ["1","2","3","4","5"]), ["ไม่สมจริง", "สมจริงมาก"]),
+    question("คุณจะกลับมาฝึกอีกไหม", seg("useAgain", ["แน่นอน","อาจจะ","ไม่"])),
+    question("ถ้ามีเวอร์ชันเต็ม (เคสมากขึ้น ฝึกได้ไม่จำกัด) คุณยินดีจ่ายเดือนละเท่าไร (บาท)", seg("pay", ["ไม่จ่าย","ไม่เกิน 99","100–199","200–399","400 ขึ้นไป"])),
+    question("คุณคือ", seg("role", ["นักศึกษาปริญญาตรี","นักศึกษาปริญญาโท/เอก","นักจิตวิทยา/ผู้ให้คำปรึกษา","อาจารย์","อื่นๆ"]))
+  );
+  const cq = el("div", "q"); const cl = el("label", null, "อยากให้ปรับหรือเพิ่มอะไร (ไม่บังคับ)"); cl.htmlFor = "surveyComment";
+  const ta = el("textarea"); ta.id = "surveyComment"; ta.rows = 3; ta.maxLength = 1000;
+  cq.append(cl, ta); form.append(cq);
+  const foot = el("div", "survey-foot"); const sb = el("button", "btn", "ส่งความเห็น"); sb.type = "submit";
+  const msg = el("span", "sn"); foot.append(sb, msg); form.append(foot);
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const val = (n) => form.querySelector(`input[name="${n}"]:checked`)?.value || "";
+    if (!val("rating")){ msg.textContent = "กรุณาให้คะแนนความพอใจก่อนส่ง"; return; }
+    sb.disabled = true; msg.textContent = "กำลังส่ง…";
+    try{
+      await api("/api/survey", {caseId: current.id, rating: val("rating"), realistic: val("realistic"), useAgain: val("useAgain"), pay: val("pay"), role: val("role"), comment: ta.value});
+      form.replaceWith(el("div", "thanks", "ขอบคุณสำหรับความเห็นค่ะ เราจะนำไปพัฒนาห้องซ้อมให้ดีขึ้น"));
+    }catch(err){
+      sb.disabled = false; msg.textContent = "ส่งไม่สำเร็จ ลองอีกครั้ง";
+    }
+  });
+  return form;
+}
+
+// ความยินยอม
+function showConsent(){
+  $("consent").hidden = false;
+  document.body.style.overflow = "hidden";
+  setTimeout(() => $("agree").focus(), 50);
+}
+$("agree").addEventListener("change", (e) => { $("agreeBtn").disabled = !e.target.checked; });
+$("agreeBtn").addEventListener("click", () => {
+  consented = true; store.set("prConsent", CONSENT_VERSION);
+  $("consent").hidden = true; document.body.style.overflow = "";
+  fetch("/api/consent", {method:"POST", headers:{"Content-Type":"application/json", "x-access-code":accessCode}, body:JSON.stringify({device, version:CONSENT_VERSION})}).catch(() => {});
+  updateCount(); $("input").focus({preventScroll:true});
+});
+$("terms").addEventListener("click", showConsent);
 
 $("compose").addEventListener("submit", (e) => { e.preventDefault(); const v = $("input").value; $("input").value = ""; $("input").style.height = ""; send(v); });
 $("input").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing){ e.preventDefault(); $("compose").requestSubmit(); } });
@@ -409,4 +586,14 @@ $("reset").onclick = () => { if (!busy) start(); };
 $("fbBtn").onclick = feedback;
 
 start();
+if (!consented) showConsent();
+fetch("/api/config?device=" + encodeURIComponent(device), {cache:"no-store"})
+  .then(r => r.ok ? r.json() : null)
+  .then(c => {
+    if (!c) return;
+    config = {...config, ...c};
+    if (c.contact) $("contactLine").textContent = " ที่ " + c.contact;
+    updateCount();
+  })
+  .catch(() => {});
 </script>

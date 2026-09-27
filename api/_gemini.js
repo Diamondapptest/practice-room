@@ -56,9 +56,9 @@ export async function callGemini({ system, contents, json = false, temperature =
   throw lastErr;
 }
 
-// ตรวจรหัสเข้าใช้ (ถ้าตั้ง ACCESS_CODE ไว้) และขนาดข้อมูล เพื่อกันคนนอกมาใช้โควตาฟรีจนหมด
-export function guard(req, res) {
-  if (req.method !== "POST") { res.status(405).json({ error: "method_not_allowed" }); return false; }
+// ตรวจเมธอด และรหัสเข้าใช้ (เฉพาะเมื่อตั้ง ACCESS_CODE ไว้)
+export function guard(req, res, method = "POST") {
+  if (req.method !== method) { res.status(405).json({ error: "method_not_allowed" }); return false; }
   const code = process.env.ACCESS_CODE;
   if (code && req.headers["x-access-code"] !== code) { res.status(401).json({ error: "need_code" }); return false; }
   return true;
