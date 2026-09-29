@@ -1,4 +1,4 @@
-<title>ห้องซ้อมให้คำปรึกษา</title>
+<title>NOTIS · ห้องซ้อมให้คำปรึกษา</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap">
@@ -230,6 +230,10 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
 @media (max-width:520px){.scores{grid-template-columns:1fr}}
 .nav b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 @media (max-width:560px){#count{display:none}.nav b{font-size:15px}.nav .right{gap:8px}.nav .btn{padding:6px 12px;font-size:13px;white-space:nowrap}.pill{font-size:12px;padding:3px 9px}}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.wordmark{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:.14em}
+.brand-sub{font-weight:500;font-size:14px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px){.brand-sub{display:none}}
 .print-only{display:none}
 .meta-line{margin:0;color:var(--muted);font-size:13px}
 @media print{
@@ -245,13 +249,13 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
 </style>
 
 <nav class="nav"><div class="nav-in">
-  <b>ห้องซ้อมให้คำปรึกษา</b>
+  <b class="brand"><span class="wordmark">NOTIS</span><span class="brand-sub">ห้องซ้อมให้คำปรึกษา</span></b>
   <div class="right"><span class="meta" id="count"></span><span class="pill" id="rounds"></span><button class="btn" id="fbBtn" type="button">ประเมินการฝึก</button></div>
 </div></nav>
 
 <main class="page">
   <header class="hero">
-    <div class="eyebrow">เครื่องจำลองการสัมภาษณ์ทางคลินิก · เพื่อการศึกษา</div>
+    <div class="eyebrow">NOTIS · เครื่องจำลองการสัมภาษณ์ทางคลินิกเพื่อการศึกษา</div>
     <h1>ซ้อมให้คำปรึกษา<br>ก่อนเจอผู้รับบริการจริง</h1>
     <p class="lede">สัมภาษณ์ผู้รับบริการจำลองที่เปิดใจหรือตั้งการ์ดตามวิธีที่คุณคุย ขอคำชี้แนะจากผู้คุมการฝึกได้ระหว่างทาง และรับผลประเมิน 9 สมรรถนะเมื่อจบเซสชัน</p>
   </header>
@@ -294,7 +298,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
 
   <footer class="legal">
     <span>ห้องซ้อมนี้เป็นเครื่องมือฝึกทักษะด้วย AI ไม่ใช่บริการบำบัดหรือคำแนะนำทางการแพทย์ ตัวละครทั้งหมดเป็นเรื่องสมมติ และผลประเมินอาจคลาดเคลื่อน ผู้ใช้รับผิดชอบการนำไปใช้เอง ห้ามพิมพ์ข้อมูลของผู้รับบริการจริง</span>
-    <span>เนื้อหาเคสอยู่ระหว่างให้นักจิตวิทยาตรวจทาน · <button class="btn plain" id="terms" type="button" style="font-size:12px;padding:0">ข้อตกลงและการใช้ข้อมูล</button></span>
+    <span>© NOTIS · ติดต่อ notis.psy@gmail.com · เนื้อหาเคสอยู่ระหว่างให้นักจิตวิทยาตรวจทาน · <button class="btn plain" id="terms" type="button" style="font-size:12px;padding:0">ข้อตกลงและการใช้ข้อมูล</button></span>
   </footer>
 </main>
 
@@ -307,7 +311,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
     <div class="sheet-body">
       <div class="term">
         <h3>ห้องซ้อมนี้คืออะไร</h3>
-        <p>เครื่องมือฝึกทักษะการให้คำปรึกษาด้วย AI สำหรับผู้เรียนและผู้ทำงานด้านจิตวิทยา ตัวละครทุกตัวเป็นเรื่องสมมติ ห้องซ้อมนี้ไม่ใช่บริการบำบัดหรือคำแนะนำทางการแพทย์ ผลประเมินจาก AI เป็นแนวทางเพื่อการเรียนรู้ อาจคลาดเคลื่อนได้ และไม่ใช่การรับรองทางวิชาชีพ</p>
+        <p>ห้องซ้อมให้คำปรึกษาของ NOTIS เป็นเครื่องมือฝึกทักษะการให้คำปรึกษาด้วย AI สำหรับผู้เรียนและผู้ทำงานด้านจิตวิทยา ตัวละครทุกตัวเป็นเรื่องสมมติ ห้องซ้อมนี้ไม่ใช่บริการบำบัดหรือคำแนะนำทางการแพทย์ ผลประเมินจาก AI เป็นแนวทางเพื่อการเรียนรู้ อาจคลาดเคลื่อนได้ และไม่ใช่การรับรองทางวิชาชีพ</p>
       </div>
       <div class="term">
         <h3>ข้อมูลที่เราเก็บ</h3>
@@ -323,7 +327,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
       </div>
       <div class="term">
         <h3>การเปิดเผยและการเก็บรักษา</h3>
-        <p>เราไม่ขายข้อมูล และไม่เปิดเผยข้อมูลที่ระบุตัวคุณได้ต่อบุคคลอื่น หากเผยแพร่ผลวิเคราะห์ จะเป็นภาพรวมที่ระบุตัวบุคคลไม่ได้เท่านั้น ข้อความระหว่างฝึกประมวลผลผ่านผู้ให้บริการ AI ภายนอก (Google Gemini) ซึ่งอาจนำไปใช้ปรับปรุงบริการของตน เราเก็บข้อมูลไม่เกิน 12 เดือน คุณขอดูหรือขอลบข้อมูลได้<span id="contactLine"> ผ่านช่องทางที่คุณได้รับลิงก์นี้</span></p>
+        <p>เราไม่ขายข้อมูล และไม่เปิดเผยข้อมูลที่ระบุตัวคุณได้ต่อบุคคลอื่น หากเผยแพร่ผลวิเคราะห์ จะเป็นภาพรวมที่ระบุตัวบุคคลไม่ได้เท่านั้น ข้อความระหว่างฝึกประมวลผลผ่านผู้ให้บริการ AI ภายนอก (Google Gemini) ซึ่งอาจนำไปใช้ปรับปรุงบริการของตน เราเก็บข้อมูลไม่เกิน 12 เดือน คุณขอดูหรือขอลบข้อมูลได้<span id="contactLine"> ที่ notis.psy@gmail.com</span></p>
       </div>
       <div class="warnline">ห้ามพิมพ์ชื่อหรือข้อมูลที่ระบุตัวผู้รับบริการจริงหรือบุคคลอื่นลงในห้องซ้อมนี้ ถ้าคุณเองกำลังรู้สึกไม่ไหว โทรสายด่วนสุขภาพจิต 1323 ได้ตลอด 24 ชั่วโมง กรณีฉุกเฉินโทร 1669</div>
     </div>
@@ -668,7 +672,7 @@ function renderFeedback(r){
   titleRow.append(el("h2", null, "ผลประเมินการฝึก"));
   const pr = el("button", "btn plain no-print", "บันทึกเป็น PDF"); pr.type = "button"; pr.onclick = () => window.print();
   titleRow.append(pr);
-  head.append(titleRow, el("p", "print-only meta-line", `${current.name} · ${new Date().toLocaleString("th-TH")}`), el("p", "overall", String(r?.overall || "")));
+  head.append(titleRow, el("p", "print-only meta-line", `NOTIS · ห้องซ้อมให้คำปรึกษา · ${current.name} · ${new Date().toLocaleString("th-TH")}`), el("p", "overall", String(r?.overall || "")));
   fb.append(head);
 
   // 9 สมรรถนะ

@@ -25,7 +25,7 @@ export default async function handler(req, res) {
       const { text } = await callGemini({
         system: "คุณคือระบบคัดกรองความปลอดภัย ตอบเป็น JSON เท่านั้น",
         contents: [{ role: "user", parts: [{ text: SELF_RISK_PROMPT(ctx) }] }],
-        json: true, temperature: 0, maxTokens: 512, lite: true,
+        json: true, temperature: 0, maxTokens: 1024, lite: true, think: "low",
       });
       const v = parseJson(text);
       if (v?.self_risk === true) {
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
     : history;
 
   try {
-    const { text } = await callGemini({ system: RULES(c, cur), contents, json: true, temperature: 0.9, maxTokens: 4096 });
+    const { text } = await callGemini({ system: RULES(c, cur), contents, json: true, temperature: 0.9, maxTokens: 4096, think: "low" });
     const out = parseJson(text);
     const reply = String(out?.reply || (out ? "" : text)).trim();
     if (!reply) throw { status: 502, code: "empty" };

@@ -1,7 +1,8 @@
 // เรียก Gemini API (generateContent) ฝั่งเซิร์ฟเวอร์ API key ไม่ถูกส่งไปที่เบราว์เซอร์
 // ลองโมเดลตามลำดับใน GEMINI_MODELS ถ้าตัวแรกเต็มโควตาหรือใช้ไม่ได้ จะลองตัวถัดไป
 
-const DEFAULT_MODELS = "gemini-3.5-flash,gemini-3.1-flash-lite";
+// แต่ละรุ่นมีโควตาฟรีแยกกัน ยิ่งมีหลายรุ่นในรายการ ยิ่งรองรับคนใช้พร้อมกันได้มากขึ้น
+const DEFAULT_MODELS = "gemini-3.5-flash,gemini-3.1-flash-lite,gemini-2.5-flash";
 
 function models() {
   return (process.env.GEMINI_MODELS || DEFAULT_MODELS)
@@ -16,53 +17,86 @@ export function parseJson(text) {
   return null;
 }
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// จำว่าโมเดลไหนไม่รองรับการตั้งระดับการคิด จะได้ไม่ส่งซ้ำ (อยู่ได้ตลอดอายุ instance)
+const noThinkingConfig = new Set();
+
 // lite = ใช้โมเดลตัวท้ายของรายการ (เร็วและประหยัด) สำหรับงานสั้นๆ เช่นตรวจความเสี่ยง
-export async function callGemini({ system, contents, json = false, temperature = 0.9, maxTokens = 2048, lite = false }) {
+// think = "low" ให้โมเดลคิดสั้นลง ตอบเร็วขึ้น (ใช้กับการเล่นบท) ถ้าโมเดลไม่รองรับจะลองใหม่โดยไม่ตั้งค่านี้
+export async function callGemini({ system, contents, json = false, temperature = 0.9, maxTokens = 2048, lite = false, think = null }) {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw { status: 500, code: "no_key" };
 
   const list = lite ? models().slice(-1).concat(models().slice(0, -1)) : models();
   let lastErr = { status: 502, code: "upstream" };
+  let hit429 = false;
+  const t0 = Date.now();
+  const BUDGET = 45000; // หยุดลองเมื่อใช้เวลาเกิน 45 วินาที ก่อนที่ Vercel จะตัดการทำงาน
+
   for (const model of list) {
-    let r;
-    try {
-      r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: system }] },
-          contents,
-          generationConfig: {
-            temperature,
-            maxOutputTokens: maxTokens,
-            ...(json ? { responseMimeType: "application/json" } : {}),
-          },
-        }),
-      });
-    } catch {
-      lastErr = { status: 502, code: "upstream" };
-      continue;
-    }
+    if (Date.now() - t0 > BUDGET) break;
+    let withThink = Boolean(think) && !noThinkingConfig.has(model);
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (Date.now() - t0 > BUDGET) break;
+      let r;
+      try {
+        r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+          // ถ้า Google ไม่ตอบภายใน 25 วินาที ยกเลิกแล้วลองใหม่หรือเปลี่ยนรุ่น
+          signal: AbortSignal.timeout(Math.max(5000, Math.min(25000, BUDGET + 10000 - (Date.now() - t0)))),
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: system }] },
+            contents,
+            generationConfig: {
+              temperature,
+              maxOutputTokens: maxTokens,
+              ...(json ? { responseMimeType: "application/json" } : {}),
+              ...(withThink ? { thinkingConfig: { thinkingLevel: think } } : {}),
+            },
+          }),
+        });
+      } catch (e) {
+        console.error(`Gemini ${model} fetch failed: ${e?.message}`);
+        lastErr = { status: 502, code: "upstream", upstream: e?.name === "TimeoutError" ? "timeout" : "network" };
+        await sleep(800);
+        continue;
+      }
 
-    if (r.ok) {
-      const data = await r.json();
-      const parts = data?.candidates?.[0]?.content?.parts || [];
-      const text = parts.filter((p) => !p.thought).map((p) => p.text || "").join("").trim();
-      if (text) return { text, model };
-      const blocked = data?.promptFeedback?.blockReason || data?.candidates?.[0]?.finishReason === "SAFETY";
-      lastErr = { status: 502, code: blocked ? "refused" : "empty" };
-      if (blocked) break;
-      continue;
-    }
+      if (r.ok) {
+        const data = await r.json();
+        const cand = data?.candidates?.[0];
+        const parts = cand?.content?.parts || [];
+        const text = parts.filter((p) => !p.thought).map((p) => p.text || "").join("").trim();
+        if (text) return { text, model };
+        const blocked = data?.promptFeedback?.blockReason || cand?.finishReason === "SAFETY";
+        console.error(`Gemini ${model} empty: finish=${cand?.finishReason}`);
+        lastErr = { status: 502, code: blocked ? "refused" : "empty", upstream: cand?.finishReason || "none" };
+        if (blocked) throw lastErr;
+        break; // ลองโมเดลถัดไป
+      }
 
-    const detail = (await r.text()).slice(0, 400);
-    console.error(`Gemini ${model} -> ${r.status}: ${detail}`);
-    if (r.status === 429) lastErr = { status: 429, code: "rate_limited" };
-    else if (r.status === 400 && /API key/i.test(detail)) { lastErr = { status: 500, code: "bad_key" }; break; }
-    else lastErr = { status: 502, code: "upstream" };
-    // 404 = ไม่มีโมเดลนี้, 429 = โควตาเต็ม, 5xx = ขัดข้องชั่วคราว → ลองโมเดลถัดไป
-    if (![404, 429, 500, 503].includes(r.status)) break;
+      const detail = (await r.text()).slice(0, 500);
+      console.error(`Gemini ${model} -> ${r.status}: ${detail}`);
+      lastErr = { status: 502, code: "upstream", upstream: r.status };
+      if (r.status === 400 && /API key/i.test(detail)) throw { status: 500, code: "bad_key" };
+      if (r.status === 400 && withThink && /think/i.test(detail)) {
+        noThinkingConfig.add(model); withThink = false; continue; // โมเดลนี้ไม่รองรับ ลองใหม่ทันที
+      }
+      if (r.status === 429) {
+        hit429 = true;
+        // ถ้า Google บอกให้รอไม่เกิน 4 วินาที รอแล้วลองรุ่นเดิมอีกครั้ง ไม่งั้นข้ามไปรุ่นถัดไป (แต่ละรุ่นมีโควตาแยกกัน)
+        const wait = Number((detail.match(/"retryDelay":\s*"(\d+(?:\.\d+)?)s"/) || [])[1]);
+        if (attempt === 0 && wait && wait <= 4) { await sleep(wait * 1000); continue; }
+        break;
+      }
+      if ([500, 502, 503, 504].includes(r.status)) { await sleep(700 * (attempt + 1)); continue; } // ขัดข้องชั่วคราว ลองซ้ำ
+      if (r.status === 404) break; // ไม่มีโมเดลนี้ ลองตัวถัดไป
+      throw lastErr;
+    }
   }
+  // ถ้ามีรุ่นใดติดโควตา ให้บอกผู้ใช้ว่า "คนใช้เยอะ รอสักครู่" แทนข้อความขัดข้องทั่วไป
+  if (hit429) throw { status: 429, code: "rate_limited", upstream: 429 };
   throw lastErr;
 }
 
@@ -91,5 +125,5 @@ export function cleanTurns(turns, maxTurns = 60) {
 
 export function sendError(res, e) {
   const status = e?.status || 500;
-  res.status(status).json({ error: e?.code || "upstream" });
+  res.status(status).json({ error: e?.code || "upstream", ...(e?.upstream ? { upstream: e.upstream } : {}) });
 }

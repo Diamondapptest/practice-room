@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     const { text } = await callGemini({
       system: "คุณคือผู้คุมการฝึกด้านจิตวิทยาการปรึกษา ตอบเป็น JSON เท่านั้น",
       contents: [{ role: "user", parts: [{ text: SUPERVISE_PROMPT(c, transcript, clampState(state, c.initState)) }] }],
-      json: true, temperature: 0.4, maxTokens: 3000,
+      json: true, temperature: 0.4, maxTokens: 3000, think: "low",
     });
     const d = parseJson(text) || {};
     res.status(200).json({
