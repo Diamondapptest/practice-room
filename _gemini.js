@@ -1,7 +1,8 @@
 // เรียก Gemini API (generateContent) ฝั่งเซิร์ฟเวอร์ API key ไม่ถูกส่งไปที่เบราว์เซอร์
 // ลองโมเดลตามลำดับใน GEMINI_MODELS ถ้าตัวแรกเต็มโควตาหรือใช้ไม่ได้ จะลองตัวถัดไป
 
-const DEFAULT_MODELS = "gemini-3.5-flash,gemini-3.1-flash-lite";
+// แต่ละรุ่นมีโควตาฟรีแยกกัน ยิ่งมีหลายรุ่นในรายการ ยิ่งรองรับคนใช้พร้อมกันได้มากขึ้น
+const DEFAULT_MODELS = "gemini-3.5-flash,gemini-3.1-flash-lite,gemini-2.5-flash";
 
 function models() {
   return (process.env.GEMINI_MODELS || DEFAULT_MODELS)
@@ -28,6 +29,7 @@ export async function callGemini({ system, contents, json = false, temperature =
 
   const list = lite ? models().slice(-1).concat(models().slice(0, -1)) : models();
   let lastErr = { status: 502, code: "upstream" };
+  let hit429 = false;
 
   for (const model of list) {
     let withThink = Boolean(think) && !noThinkingConfig.has(model);
@@ -75,12 +77,20 @@ export async function callGemini({ system, contents, json = false, temperature =
       if (r.status === 400 && withThink && /think/i.test(detail)) {
         noThinkingConfig.add(model); withThink = false; continue; // โมเดลนี้ไม่รองรับ ลองใหม่ทันที
       }
-      if (r.status === 429) { lastErr = { status: 429, code: "rate_limited" }; break; }
+      if (r.status === 429) {
+        hit429 = true;
+        // ถ้า Google บอกให้รอไม่เกิน 4 วินาที รอแล้วลองรุ่นเดิมอีกครั้ง ไม่งั้นข้ามไปรุ่นถัดไป (แต่ละรุ่นมีโควตาแยกกัน)
+        const wait = Number((detail.match(/"retryDelay":\s*"(\d+(?:\.\d+)?)s"/) || [])[1]);
+        if (attempt === 0 && wait && wait <= 4) { await sleep(wait * 1000); continue; }
+        break;
+      }
       if ([500, 502, 503, 504].includes(r.status)) { await sleep(700 * (attempt + 1)); continue; } // ขัดข้องชั่วคราว ลองซ้ำ
       if (r.status === 404) break; // ไม่มีโมเดลนี้ ลองตัวถัดไป
       throw lastErr;
     }
   }
+  // ถ้ามีรุ่นใดติดโควตา ให้บอกผู้ใช้ว่า "คนใช้เยอะ รอสักครู่" แทนข้อความขัดข้องทั่วไป
+  if (hit429) throw { status: 429, code: "rate_limited", upstream: 429 };
   throw lastErr;
 }
 
