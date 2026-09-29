@@ -8,12 +8,22 @@ function models() {
     .split(",").map((s) => s.trim()).filter(Boolean);
 }
 
-export async function callGemini({ system, contents, json = false, temperature = 0.9, maxTokens = 2048 }) {
+// อ่าน JSON จากคำตอบของโมเดล แม้จะมีข้อความหรือ code fence ปนมา
+export function parseJson(text) {
+  try { return JSON.parse(text); } catch {}
+  const m = String(text).match(/\{[\s\S]*\}/);
+  if (m) { try { return JSON.parse(m[0]); } catch {} }
+  return null;
+}
+
+// lite = ใช้โมเดลตัวท้ายของรายการ (เร็วและประหยัด) สำหรับงานสั้นๆ เช่นตรวจความเสี่ยง
+export async function callGemini({ system, contents, json = false, temperature = 0.9, maxTokens = 2048, lite = false }) {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw { status: 500, code: "no_key" };
 
+  const list = lite ? models().slice(-1).concat(models().slice(0, -1)) : models();
   let lastErr = { status: 502, code: "upstream" };
-  for (const model of models()) {
+  for (const model of list) {
     let r;
     try {
       r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {

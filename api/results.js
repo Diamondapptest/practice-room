@@ -1,5 +1,5 @@
 // ดาวน์โหลดผลแบบสอบถามหรือผลประเมินเป็นไฟล์ CSV (เปิดใน Google Sheets หรือ Excel ได้)
-// ใช้: /api/results?key=ADMIN_KEY&type=surveys   หรือ   &type=evaluations
+// ใช้: /api/results?key=ADMIN_KEY&type=surveys   หรือ   &type=evaluations   หรือ   &type=safety
 import { hasStore, readRecords } from "./_store.js";
 
 const csvCell = (v) => {
@@ -12,11 +12,13 @@ export default async function handler(req, res) {
   if (!key || req.query?.key !== key) return res.status(401).send("ต้องใส่ ADMIN_KEY ที่ถูกต้อง");
   if (!hasStore()) return res.status(503).send("ยังไม่ได้เชื่อมฐานข้อมูล");
 
-  const type = req.query?.type === "evaluations" ? "evaluations" : "surveys";
+  const type = ["evaluations", "safety"].includes(req.query?.type) ? req.query.type : "surveys";
   const rows = await readRecords("log:" + type);
-  const cols = type === "surveys"
-    ? ["ts", "caseId", "rating", "realistic", "useAgain", "pay", "role", "comment", "user", "session"]
-    : ["ts", "caseId", "turns", "scores", "transcript", "user", "session"];
+  const cols = {
+    surveys: ["ts", "caseId", "rating", "realistic", "useAgain", "pay", "role", "comment", "user", "session"],
+    evaluations: ["ts", "caseId", "turns", "scores", "stages", "failures", "finalState", "transcript", "user", "session"],
+    safety: ["ts", "caseId", "user", "session"],
+  }[type];
   // แสดงเวลาเป็นเวลาไทย อ่านง่ายใน Google Sheets
   const thai = (iso) => new Date(new Date(iso).getTime() + 7 * 3600e3).toISOString().slice(0, 16).replace("T", " ");
   const lines = [cols.map((c) => (c === "ts" ? "time_th" : c)).join(",")]

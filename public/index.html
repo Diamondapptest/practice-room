@@ -10,6 +10,8 @@
   --blue:#0071E3; --blue-ink:#FFFFFF; --link:#0066CC;
   --green:#34C759; --orange:#FF9500; --red:#FF3B30; --red-soft:#FFF1F0;
   --bar:rgba(245,245,247,.72);
+  --sup-bg:#F3F0FF; --sup-line:#DCD4FF; --sup-ink:#5B3FD6;
+  --c1:#0071E3; --c2:#E07A00;
   --shadow:0 2px 6px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.06);
   --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Sukhumvit Set","IBM Plex Sans Thai","Helvetica Neue",sans-serif;
   --display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Sukhumvit Set","IBM Plex Sans Thai","Helvetica Neue",sans-serif;
@@ -164,6 +166,82 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
 .survey-foot{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .thanks{background:var(--fill);border-radius:16px;padding:18px;font-size:16px;text-align:center}
 .legal{display:grid;gap:4px}
+.brief-sec{display:grid;gap:6px;padding-top:12px;border-top:1px solid var(--hair)}
+.obj{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:14px;line-height:1.5}
+.stages-hint summary{cursor:pointer;font-family:var(--display);font-size:15px;font-weight:600}
+.stages-hint summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
+.chat-actions{position:absolute;right:14px;top:12px;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.chat-actions .btn{padding:4px 2px;font-size:13px}
+@media (max-width:560px){.chat-head{padding-bottom:40px}.chat-actions{top:auto;bottom:6px;right:12px;flex-direction:row;gap:12px}}
+.sup{align-self:stretch;background:var(--sup-bg);border:1px solid var(--sup-line);border-radius:16px;padding:12px 16px;display:grid;gap:6px;font-size:14px;line-height:1.55;margin:6px 0}
+.sup > b{font-size:12px;letter-spacing:.04em;color:var(--sup-ink)}
+.sup p{margin:0} .sup ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+.sup-stage{font-size:12px;font-weight:600;color:var(--sup-ink)}
+.crisis{align-self:stretch;background:var(--red-soft);border-radius:16px;padding:14px 18px;display:grid;gap:8px;font-size:15px;line-height:1.55;margin:6px 0}
+.crisis > b{color:var(--red);font-size:16px}
+.crisis p,.crisis ul{margin:0} .crisis ul{padding-left:1.2em;display:grid;gap:2px}
+.crisis-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.fb-title{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sec{display:grid;gap:10px}
+.sec h3{font-family:var(--display);font-size:19px;font-weight:600;margin:0;letter-spacing:-.01em}
+.sec .sub{margin:-6px 0 0;color:var(--muted);font-size:14px}
+.sec .body{margin:0;font-size:15px;line-height:1.6;max-width:48em}
+.stages{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media (max-width:760px){.stages{grid-template-columns:1fr}}
+.stage{background:var(--fill);border-radius:14px;padding:12px;display:grid;gap:4px;align-content:start}
+.stage .mark{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:#fff;background:var(--faint)}
+.stage.done .mark{background:var(--green)}
+.stage b{font-size:14px}
+.fails{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.fails li{background:var(--fill);border-radius:12px;padding:10px 14px;font-size:14px;line-height:1.5;border-left:3px solid var(--orange)}
+.chart{display:grid;gap:8px}
+.chart svg{width:100%;max-width:100%;height:auto;display:block}
+.chart .grid{stroke:var(--hair);stroke-width:1}
+.chart .axis{fill:var(--muted);font-size:11px;font-family:var(--font)}
+.chart .line{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart .dot{stroke:var(--surface);stroke-width:2}
+.chart .lbl{font-size:12px;font-weight:600;fill:var(--ink);font-family:var(--font)}
+.s-trust.line{stroke:var(--c1)} .s-trust.dot{fill:var(--c1)}
+.s-def.line{stroke:var(--c2)} .s-def.dot{fill:var(--c2)}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted)}
+.key::before{content:"";display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.k-trust::before{background:var(--c1)} .k-def::before{background:var(--c2)}
+.state-table summary{cursor:pointer;font-size:13px;color:var(--link)}
+.state-table table{border-collapse:collapse;font-size:13px;margin-top:8px;font-variant-numeric:tabular-nums}
+.state-table th,.state-table td{padding:4px 10px;text-align:left;border-bottom:1px solid var(--hair)}
+.state-table td{text-align:right}
+.replay{display:grid;gap:8px;background:var(--fill);border-radius:16px;padding:14px}
+.rp{font-size:14px;line-height:1.5;max-width:88%}
+.rp.client{justify-self:start;background:var(--surface);padding:8px 12px;border-radius:14px}
+.rp.me{justify-self:end;display:grid;gap:4px;justify-items:end}
+.rp-text{background:var(--blue);color:#fff;padding:8px 12px;border-radius:14px}
+.tn{font-size:11px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.rp-note{max-width:100%}
+.rp-note summary{list-style:none;cursor:pointer;display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end}
+.rp-note summary::-webkit-details-marker{display:none}
+.rp-note summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:8px}
+.rp-note p{margin:6px 0 0;background:var(--surface);border-radius:10px;padding:8px 12px;font-size:13px;color:var(--ink)}
+.tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;border:1px solid transparent}
+.t-blue{background:#E5F0FF;color:#0050A8} .t-green{background:#E3F6E8;color:#1D6B32} .t-teal{background:#E0F4F4;color:#0D6363}
+.t-orange{background:#FFF0DC;color:#8A4A00} .t-red{background:#FFE8E6;color:#A0241B} .t-gray{background:#ECECEF;color:#48484D}
+.t-yellow{background:#FFF8D6;color:#6B5600;border-color:#E6C84A}
+.debrief ol{margin:0;padding-left:1.3em;display:grid;gap:6px;font-size:15px;line-height:1.55}
+.scores{grid-template-columns:repeat(3,1fr)}
+@media (max-width:520px){.scores{grid-template-columns:1fr}}
+.nav b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+@media (max-width:560px){#count{display:none}.nav b{font-size:15px}.nav .right{gap:8px}.nav .btn{padding:6px 12px;font-size:13px;white-space:nowrap}.pill{font-size:12px;padding:3px 9px}}
+.print-only{display:none}
+.meta-line{margin:0;color:var(--muted);font-size:13px}
+@media print{
+  body{background:#fff}
+  .nav,.hero,#cases,.section-title,.main,footer,.no-print,.offline,#consent{display:none!important}
+  .page{padding:0}
+  .feedback{box-shadow:none;padding:0}
+  .print-only{display:block}
+  .rp-note p{display:block}
+  details > *{display:block}
+  .score,.stage,.replay,.fails li{break-inside:avoid}
+}
 </style>
 
 <nav class="nav"><div class="nav-in">
@@ -173,9 +251,9 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
 
 <main class="page">
   <header class="hero">
-    <div class="eyebrow">ต้นแบบ · สำหรับฝึกทักษะเท่านั้น</div>
+    <div class="eyebrow">เครื่องจำลองการสัมภาษณ์ทางคลินิก · เพื่อการศึกษา</div>
     <h1>ซ้อมให้คำปรึกษา<br>ก่อนเจอผู้รับบริการจริง</h1>
-    <p class="lede">คุยกับผู้รับบริการจำลองที่ตอบสนองต่อวิธีฟังของคุณ แล้วกด "ประเมินการฝึก" เพื่อรับคะแนนและคำแนะนำจากผู้คุมการฝึก AI ทันที</p>
+    <p class="lede">สัมภาษณ์ผู้รับบริการจำลองที่เปิดใจหรือตั้งการ์ดตามวิธีที่คุณคุย ขอคำชี้แนะจากผู้คุมการฝึกได้ระหว่างทาง และรับผลประเมิน 9 สมรรถนะเมื่อจบเซสชัน</p>
   </header>
 
   <form id="gate" class="offline gate" hidden>
@@ -195,7 +273,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
         <div class="avatar" id="av"></div>
         <b id="whoName"></b>
         <span id="whoLine"></span>
-        <button class="btn plain reset" id="reset" type="button">เริ่มใหม่</button>
+        <div class="chat-actions"><button class="btn plain" id="supBtn" type="button">ขอคำชี้แนะ (3)</button><button class="btn plain" id="reset" type="button">เริ่มใหม่</button></div>
       </div>
       <div class="log" id="log" aria-live="polite"></div>
       <form class="compose" id="compose">
@@ -203,7 +281,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
         <textarea id="input" rows="1" placeholder="พิมพ์สิ่งที่คุณจะพูด…"></textarea>
         <button class="send" id="send" type="submit" aria-label="ส่ง"><svg viewBox="0 0 16 16"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg></button>
       </form>
-      <div class="chat-note">ระบบนับ 1 รอบเมื่อคุณส่งข้อความแรกของแต่ละเคส</div>
+      <div class="chat-note">ระบบนับ 1 รอบเมื่อคุณส่งข้อความแรกของแต่ละเคส · "ขอคำชี้แนะ" ได้ 3 ครั้งต่อรอบ ไม่นับรอบเพิ่ม</div>
     </section>
 
     <aside class="side">
@@ -260,47 +338,54 @@ footer{text-align:center;font-size:12px;color:var(--muted);max-width:60em;margin
 <script>
 const CASES = [
  {
-  "id": "burnout",
-  "level": 1,
-  "levelLabel": "เริ่มต้น",
-  "name": "คุณมายด์",
-  "initial": "ม",
-  "age": 29,
-  "job": "พนักงานการตลาดบริษัทเอเจนซี่ กรุงเทพฯ",
-  "topic": "เครียดจากงาน หมดไฟ",
-  "surface": "มาเพราะหัวหน้าแนะนำ บอกว่านอนไม่ค่อยหลับ ตื่นมาไม่อยากไปทำงาน",
-  "goal": "สร้างสัมพันธภาพ ใช้คำถามปลายเปิด และสะท้อนความรู้สึก ให้ผู้รับบริการเล่าสิ่งที่ซ่อนอยู่",
-  "opening": "สวัสดีค่ะ… จริงๆ ก็ไม่แน่ใจเหมือนกันว่าต้องมาไหม หัวหน้าเขาแนะนำมาน่ะค่ะ ช่วงนี้แค่นอนไม่ค่อยหลับเฉยๆ"
+  id: "burnout", level: 1, levelLabel: "เริ่มต้น", name: "คุณมายด์", initial: "ม", age: 29,
+  job: "พนักงานการตลาดบริษัทเอเจนซี่ กรุงเทพฯ",
+  topic: "เครียดจากงาน หมดไฟ",
+  surface: "มาเพราะหัวหน้าแนะนำ บอกว่านอนไม่ค่อยหลับ ตื่นมาไม่อยากไปทำงาน",
+  objectives: ["เปิดเซสชันด้วยการบอกวัตถุประสงค์และความลับ", "สร้างสัมพันธภาพกับผู้รับบริการที่ลดทอนปัญหาตัวเอง", "ใช้คำถามปลายเปิดและการสะท้อนความรู้สึกแทนการให้คำแนะนำ", "สำรวจผลกระทบต่อการนอนและการทำงาน", "สรุปความและปิดเซสชัน"],
+  opening: "สวัสดีค่ะ… จริงๆ ก็ไม่แน่ใจเหมือนกันว่าต้องมาไหม หัวหน้าเขาแนะนำมาน่ะค่ะ ช่วงนี้แค่นอนไม่ค่อยหลับเฉยๆ",
+  initState: { trust: 30, anxiety: 55, defensiveness: 50, insight: 25 }
  },
  {
-  "id": "lowmood",
-  "level": 3,
-  "levelLabel": "ท้าทาย",
-  "name": "คุณต้น",
-  "initial": "ต",
-  "age": 21,
-  "job": "นักศึกษาวิศวกรรม ปี 3 ต่างจังหวัด",
-  "topic": "อารมณ์ซึมเศร้า ประเมินความเสี่ยง",
-  "surface": "ทักมาช่วงดึกผ่านบริการปรึกษาของมหาวิทยาลัย บอกว่าเรียนไม่รู้เรื่อง ไม่อยากทำอะไร",
-  "goal": "รับฟังโดยไม่รีบแก้ปัญหา สังเกตสัญญาณเสี่ยง และถามเรื่องความคิดทำร้ายตัวเองอย่างตรงไปตรงมาและอ่อนโยน",
-  "opening": "ผมก็ไม่รู้จะเริ่มยังไงครับ ช่วงนี้มันเหนื่อยไปหมด เรียนก็ไม่รู้เรื่อง ไม่อยากทำอะไรเลย"
+  id: "lowmood", level: 3, levelLabel: "ท้าทาย", name: "คุณต้น", initial: "ต", age: 21,
+  job: "นักศึกษาวิศวกรรม ปี 3 ต่างจังหวัด",
+  topic: "อารมณ์ซึมเศร้า ประเมินความเสี่ยง",
+  surface: "ทักมาช่วงดึกผ่านบริการปรึกษาของมหาวิทยาลัย บอกว่าเรียนไม่รู้เรื่อง ไม่อยากทำอะไร",
+  objectives: ["รับฟังโดยไม่รีบแก้ปัญหาหรือให้กำลังใจแบบผิวเผิน", "ประเมินอาการ ระยะเวลา และผลกระทบต่อการเรียนและการใช้ชีวิต", "สังเกตสัญญาณเสี่ยง และถามเรื่องความคิดทำร้ายตัวเองอย่างตรงไปตรงมาและอ่อนโยน", "ประเมินแผน วิธี และปัจจัยปกป้องเมื่อพบความคิดเสี่ยง", "ปิดเซสชันด้วยขั้นต่อไปที่ปลอดภัย"],
+  opening: "ผมก็ไม่รู้จะเริ่มยังไงครับ ช่วงนี้มันเหนื่อยไปหมด เรียนก็ไม่รู้เรื่อง ไม่อยากทำอะไรเลย",
+  initState: { trust: 20, anxiety: 65, defensiveness: 60, insight: 15 }
  },
  {
-  "id": "family",
-  "level": 2,
-  "levelLabel": "กลาง",
-  "name": "คุณสุดา",
-  "initial": "ส",
-  "age": 46,
-  "job": "เจ้าของร้านขายของชำ นนทบุรี",
-  "topic": "ขัดแย้งในครอบครัว ลูกวัยรุ่น",
-  "surface": "มาปรึกษาเรื่องลูกสาวอายุ 16 ที่ไม่ยอมคุย ขังตัวอยู่ในห้อง อยากให้ช่วย 'ทำให้ลูกเชื่อฟัง'",
-  "goal": "รับมือกับผู้รับบริการที่มาพร้อมความคาดหวังให้แก้ที่คนอื่น ใช้การสะท้อนและคำถามช่วยให้เห็นมุมของตัวเอง",
-  "opening": "คือพี่มาเรื่องลูกสาวนะคะ อายุสิบหกแล้ว ดื้อมาก ไม่พูดกับพี่เลย ขังตัวอยู่แต่ในห้อง หมอช่วยบอกหน่อยว่าต้องทำยังไงให้ลูกเชื่อฟัง"
+  id: "family", level: 2, levelLabel: "กลาง", name: "คุณสุดา", initial: "ส", age: 46,
+  job: "เจ้าของร้านขายของชำ นนทบุรี",
+  topic: "ขัดแย้งในครอบครัว ลูกวัยรุ่น",
+  surface: "มาปรึกษาเรื่องลูกสาวอายุ 16 ที่ไม่ยอมคุย ขังตัวอยู่ในห้อง อยากให้ช่วย 'ทำให้ลูกเชื่อฟัง'",
+  objectives: ["รับมือกับผู้รับบริการที่ตั้งการ์ดและคาดหวังให้แก้ที่คนอื่น", "ยอมรับความรู้สึกโดยไม่เข้าข้างฝ่ายใดเร็วเกินไป", "ใช้การสะท้อนและคำถามช่วยให้ผู้รับบริการเห็นมุมของตัวเอง", "รักษาขอบเขตทางวิชาชีพเมื่อถูกขอให้ตัดสินหรือสั่งการ", "สรุปความและตกลงขั้นต่อไปร่วมกัน"],
+  opening: "คือพี่มาเรื่องลูกสาวนะคะ อายุสิบหกแล้ว ดื้อมาก ไม่พูดกับพี่เลย ขังตัวอยู่แต่ในห้อง หมอช่วยบอกหน่อยว่าต้องทำยังไงให้ลูกเชื่อฟัง",
+  initState: { trust: 25, anxiety: 70, defensiveness: 70, insight: 15 }
  }
 ];
 const HUES = {burnout:"linear-gradient(135deg,#FF9F0A,#FF6B6B)", lowmood:"linear-gradient(135deg,#5E5CE6,#0A84FF)", family:"linear-gradient(135deg,#30D158,#00A6A6)"};
 const CONSENT_VERSION = "v1-2026-09";
+const SUP_LIMIT = 3;
+const STAGES = [
+  ["เปิดเซสชัน", "แนะนำตัว บอกวัตถุประสงค์ ขอบเขตความลับ และสิ่งที่คาดหวังได้จากการพูดคุย"],
+  ["สร้างสัมพันธภาพ", "ทำให้ผู้รับบริการรู้สึกปลอดภัยและอยากเล่า"],
+  ["ประเมิน", "อาการ ระยะเวลา ประวัติ และผลกระทบต่อชีวิตประจำวัน รวมถึงความเสี่ยง"],
+  ["ทำความเข้าใจปัญหา", "ตั้งสมมติฐานเบื้องต้น และรู้ว่าข้อมูลอะไรยังขาด"],
+  ["ปิดเซสชัน", "สรุปสิ่งที่ได้ฟัง และตกลงขั้นต่อไปร่วมกัน"]
+];
+const TAG_LABEL = {
+  open_question:["คำถามปลายเปิด","t-blue"], closed_question:["คำถามปลายปิด","t-gray"], reflection:["สะท้อน","t-green"],
+  validation:["ยอมรับความรู้สึก","t-teal"], empathy:["เห็นอกเห็นใจ","t-teal"], summary:["สรุปความ","t-green"],
+  risk_question:["ถามความเสี่ยง","t-blue"], advice:["ให้คำแนะนำ","t-orange"], judgment:["ตัดสิน","t-red"],
+  premature_diagnosis:["วินิจฉัยเร็วเกินไป","t-red"], missed_opportunity:["พลาดโอกาส","t-yellow"]
+};
+const FAIL_LABEL = {
+  premature_diagnosis:"วินิจฉัยเร็วเกินไป", advice_before_exploration:"ให้คำแนะนำก่อนสำรวจ",
+  closed_question_streak:"ถามคำถามปลายปิดติดกันหลายข้อ", ignored_risk_cue:"มองข้ามสัญญาณเสี่ยง",
+  missed_functional_impairment:"ไม่ได้ถามผลกระทบต่อชีวิตประจำวัน"
+};
 const $ = (id) => document.getElementById(id);
 const store = {
   get(k){ try { return localStorage.getItem(k); } catch { return null; } },
@@ -314,7 +399,8 @@ if (!device || !/^[A-Za-z0-9_-]{8,64}$/.test(device)) { device = rid(); store.se
 let accessCode = store.get("prCode") || "";
 let config = { limit: 3, remaining: null, stored: false, contact: "" };
 let current = CASES[0];
-let turns = [], session = "", counted = false, busy = false, locked = false, consented = store.get("prConsent") === CONSENT_VERSION;
+let turns = [], states = [], session = "", counted = false, busy = false, locked = false, supLeft = SUP_LIMIT;
+let consented = store.get("prConsent") === CONSENT_VERSION;
 
 function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 function avatar(node, c){ node.textContent = c.initial; node.style.background = HUES[c.id]; }
@@ -352,6 +438,7 @@ function renderCases(){
   }
 }
 
+// แฟ้มเคสและการเตรียมตัวก่อนฝึก (pre-brief)
 function renderBrief(){
   const c = current, br = $("brief"); br.textContent = "";
   br.append(el("h3", null, "แฟ้มเคส"));
@@ -360,9 +447,13 @@ function renderBrief(){
     const d = el("div"); d.append(el("dt", null, k), el("dd", null, v)); dl.append(d);
   }
   br.append(dl);
-  const g = el("div"); g.style.cssText = "display:grid;gap:4px;padding-top:10px;border-top:1px solid var(--hair)";
-  g.append(el("h3", null, "เป้าหมายการฝึก"), el("p", "goal", c.goal));
+  const g = el("div", "brief-sec");
+  g.append(el("h3", null, "วัตถุประสงค์การเรียนรู้"));
+  const ol = el("ul", "obj"); for (const o of c.objectives) ol.append(el("li", null, o)); g.append(ol);
   br.append(g);
+  const st = el("details", "brief-sec stages-hint"); st.append(el("summary", null, "โครงสร้างเซสชันที่แนะนำ"));
+  const sl = el("ol", "obj"); for (const [k, v] of STAGES){ const li = el("li"); li.append(el("b", null, k + " "), document.createTextNode(v)); sl.append(li); }
+  st.append(sl); br.append(st);
   avatar($("av"), c);
   $("whoName").textContent = c.name;
   $("whoLine").textContent = `ผู้รับบริการจำลอง · ${c.topic}`;
@@ -382,19 +473,22 @@ function updateCount(){
   const n = turns.filter(t => t.role === "user").length;
   $("count").textContent = n ? `${n} ข้อความ` : "";
   $("fbBtn").disabled = busy || n < 1 || !consented;
-  const blocked = busy || locked || !consented || (!counted && remaining() <= 0);
-  $("send").disabled = blocked;
-  $("input").disabled = locked || !consented || (!counted && remaining() <= 0);
-  $("input").placeholder = (!counted && remaining() <= 0) ? "วันนี้ฝึกครบแล้ว กลับมาใหม่พรุ่งนี้" : "พิมพ์สิ่งที่คุณจะพูด…";
+  const noRound = !counted && remaining() <= 0;
+  $("send").disabled = busy || locked || !consented || noRound;
+  $("input").disabled = locked || !consented || noRound;
+  $("input").placeholder = noRound ? "วันนี้ฝึกครบแล้ว กลับมาใหม่พรุ่งนี้" : "พิมพ์สิ่งที่คุณจะพูด…";
+  $("supBtn").disabled = busy || !counted || supLeft <= 0 || locked;
+  $("supBtn").textContent = supLeft > 0 ? `ขอคำชี้แนะ (${supLeft})` : "ใช้คำชี้แนะครบแล้ว";
   renderRounds();
 }
 
 function start(){
   turns = [{role:"assistant", content: current.opening}];
-  session = rid(); counted = false; locked = false;
+  states = [{...current.initState}];
+  session = rid(); counted = false; locked = false; supLeft = SUP_LIMIT;
   $("log").textContent = "";
   $("feedback").hidden = true;
-  addMsg("sys", "เริ่มเซสชัน · ผู้รับบริการเพิ่งนั่งลง");
+  addMsg("sys", "เริ่มเซสชัน · อย่าลืมเปิดเซสชันด้วยการบอกวัตถุประสงค์และขอบเขตความลับ");
   addMsg("client", current.opening);
   renderCases(); renderBrief(); updateCount();
   $("input").value = "";
@@ -404,6 +498,7 @@ const limitMsg = () => `วันนี้คุณฝึกครบ ${config.l
 const errCopy = (code) => ({
   rate_limited:"ตอนนี้มีคนใช้เยอะ โควตาฟรีเต็มชั่วคราว รอประมาณหนึ่งนาทีแล้วลองส่งใหม่",
   daily_limit: limitMsg(),
+  supervise_limit:"ใช้คำชี้แนะครบ 3 ครั้งของรอบนี้แล้ว",
   refused:"ระบบไม่ตอบข้อความนี้ ลองเปลี่ยนวิธีพูดแล้วส่งใหม่",
   invalid_json:"ประเมินไม่สำเร็จ กดประเมินการฝึกอีกครั้ง",
   no_key:"ผู้ดูแลยังไม่ได้ตั้งค่า GEMINI_API_KEY",
@@ -433,7 +528,26 @@ $("gate").addEventListener("submit", (e) => {
   $("gate").hidden = true;
 });
 
-async function send(text){
+// การ์ดช่วยเหลือเมื่อระบบคัดกรองพบว่าผู้ฝึกอาจกำลังพูดถึงความทุกข์ของตัวเอง
+function crisisCard(){
+  const card = el("div", "crisis"); card.setAttribute("role", "alert");
+  card.append(el("b", null, "หยุดการฝึกไว้ก่อน"));
+  card.append(el("p", null, "ข้อความล่าสุดฟังเหมือนคุณอาจกำลังพูดถึงความรู้สึกของตัวเอง ถ้าคุณกำลังรู้สึกไม่ไหว คุณไม่ได้อยู่คนเดียว มีคนพร้อมรับฟังเสมอ"));
+  const ul = el("ul");
+  ul.append(el("li", null, "สายด่วนสุขภาพจิต 1323 (ตลอด 24 ชั่วโมง ไม่มีค่าใช้จ่าย)"));
+  ul.append(el("li", null, "เหตุฉุกเฉินหรือมีอันตรายเฉพาะหน้า โทร 1669"));
+  ul.append(el("li", null, "คุยกับอาจารย์ที่ปรึกษา หรือบริการให้คำปรึกษาของมหาวิทยาลัย"));
+  card.append(ul);
+  const row = el("div", "crisis-actions");
+  const cont = el("button", "btn plain", "ฉันพิมพ์ในบทบาทผู้ให้คำปรึกษา ฝึกต่อ"); cont.type = "button";
+  const stop = el("button", "btn", "พักการฝึก"); stop.type = "button";
+  row.append(stop, cont); card.append(row);
+  cont.onclick = () => { card.remove(); const last = turns[turns.length - 1]; if (last?.role === "user"){ turns.pop(); $("log").lastElementChild?.remove(); send(last.content, true); } };
+  stop.onclick = () => { locked = true; row.remove(); card.append(el("p", "fine", "พักการฝึกแล้ว ดูแลตัวเองก่อนนะคะ กด \"เริ่มใหม่\" เมื่อพร้อมกลับมาฝึก")); updateCount(); };
+  $("log").append(card); $("log").scrollTop = $("log").scrollHeight;
+}
+
+async function send(text, skipSafety = false){
   text = text.trim();
   if (busy || !text || !consented) return;
   if (!counted && remaining() <= 0){ addMsg("err", limitMsg()); return; }
@@ -442,11 +556,13 @@ async function send(text){
   addMsg("me", text);
   const out = typing();
   try{
-    const { reply, remaining: left } = await api("/api/chat", {caseId: current.id, turns});
+    const d = await api("/api/chat", {caseId: current.id, turns, state: states[states.length - 1], skipSafety});
+    if (d.safety){ out.remove(); crisisCard(); return; }
     if (!counted){ counted = true; localUse(session); }
-    if (typeof left === "number") config.remaining = left;
-    out.textContent = reply;
-    turns.push({role:"assistant", content:reply});
+    if (typeof d.remaining === "number") config.remaining = d.remaining;
+    out.textContent = d.reply;
+    turns.push({role:"assistant", content:d.reply});
+    if (d.state) states.push(d.state);
     $("log").scrollTop = $("log").scrollHeight;
   }catch(e){
     out.remove();
@@ -458,17 +574,40 @@ async function send(text){
   }
 }
 
+// โหมดผู้คุมการฝึก: หยุดพักเพื่อขอคำชี้แนะ ไม่ถูกส่งเข้าไปในบทสนทนา
+async function supervise(){
+  if (busy || supLeft <= 0) return;
+  busy = true; updateCount();
+  const box = el("div", "sup"); box.append(el("b", null, "ผู้คุมการฝึก"));
+  const t = el("span", "typing"); t.append(el("i"), el("i"), el("i")); box.append(t);
+  $("log").append(box); $("log").scrollTop = $("log").scrollHeight;
+  try{
+    const d = await api("/api/supervise", {caseId: current.id, turns, state: states[states.length - 1]});
+    supLeft = typeof d.left === "number" ? d.left : supLeft - 1;
+    t.remove();
+    if (d.stage) box.append(el("span", "sup-stage", "ตอนนี้อยู่ขั้น: " + d.stage));
+    if (d.observation) box.append(el("p", null, d.observation));
+    if (d.prompts?.length){ const ul = el("ul"); for (const p of d.prompts) ul.append(el("li", null, p)); box.append(ul); }
+    box.append(el("span", "fine", "ลองคิดจากคำถามเหล่านี้ แล้วเลือกเองว่าจะพูดอะไรต่อ"));
+  }catch(e){
+    t.remove(); box.append(el("p", null, errCopy(e?.code)));
+    if (e?.code === "supervise_limit") supLeft = 0;
+  }finally{
+    busy = false; updateCount(); $("log").scrollTop = $("log").scrollHeight;
+  }
+}
+
 async function feedback(){
   if (busy) return;
   busy = true; updateCount();
   const fb = $("feedback"); fb.hidden = false; fb.textContent = "";
   const head = el("div", "fb-head"); head.append(el("h2", null, "ผลประเมินการฝึก"));
   const line = el("div", "thinking-line"); const t = el("span", "typing"); t.append(el("i"), el("i"), el("i"));
-  line.append(t, el("span", null, "ผู้คุมการฝึก AI กำลังอ่านบทสนทนาและประเมิน อาจใช้เวลาราวครึ่งนาที"));
+  line.append(t, el("span", null, "ผู้คุมการฝึก AI กำลังอ่านบทสนทนาและประเมิน อาจใช้เวลาราวหนึ่งนาที"));
   head.append(line); fb.append(head);
   fb.scrollIntoView({behavior:"smooth", block:"start"});
   try{
-    const r = await api("/api/feedback", {caseId: current.id, turns});
+    const r = await api("/api/feedback", {caseId: current.id, turns, states});
     renderFeedback(r);
   }catch(e){
     if (e?.code === "need_code") fb.hidden = true;
@@ -478,13 +617,63 @@ async function feedback(){
   }
 }
 
+// กราฟสภาวะภายในของผู้รับบริการ: ความไว้ใจ และการตั้งการ์ด ตลอดเซสชัน
+function stateChart(){
+  if (states.length < 2) return null;
+  const W = 640, H = 220, L = 34, R = 16, T = 14, B = 30;
+  const x = (i) => L + (W - L - R) * (states.length === 1 ? 0 : i / (states.length - 1));
+  const y = (v) => T + (H - T - B) * (1 - v / 100);
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", "กราฟความไว้ใจและการตั้งการ์ดของผู้รับบริการในแต่ละข้อความ");
+  const mk = (tag, attrs, text) => { const n = document.createElementNS(ns, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (text != null) n.textContent = text; svg.append(n); return n; };
+  for (const v of [0, 50, 100]){
+    mk("line", {x1:L, x2:W - R, y1:y(v), y2:y(v), class:"grid"});
+    mk("text", {x:L - 8, y:y(v) + 4, "text-anchor":"end", class:"axis"}, String(v));
+  }
+  states.forEach((_, i) => { if (i === 0 || i === states.length - 1 || states.length <= 12) mk("text", {x:x(i), y:H - 8, "text-anchor":"middle", class:"axis"}, i === 0 ? "เริ่ม" : "T" + i); });
+  const series = [["trust", "s-trust", "ความไว้ใจ"], ["defensiveness", "s-def", "การตั้งการ์ด"]];
+  for (const [k, cls, label] of series){
+    mk("path", {d: states.map((s, i) => (i ? "L" : "M") + x(i).toFixed(1) + " " + y(s[k]).toFixed(1)).join(" "), class:"line " + cls});
+    states.forEach((s, i) => {
+      const c = mk("circle", {cx:x(i), cy:y(s[k]), r: i === states.length - 1 ? 5 : 3.5, class:"dot " + cls});
+      const tt = document.createElementNS(ns, "title"); tt.textContent = `${i === 0 ? "เริ่ม" : "หลังข้อความ T" + i} · ${label} ${s[k]}`; c.append(tt);
+    });
+    const last = states[states.length - 1][k];
+    mk("text", {x:x(states.length - 1) - 8, y:y(last) + (k === "trust" ? -10 : 18), "text-anchor":"end", class:"lbl " + cls}, `${label} ${last}`);
+  }
+  const wrap = el("div", "chart");
+  const legend = el("div", "legend");
+  legend.append(Object.assign(el("span", "key k-trust"), {textContent:"ความไว้ใจ"}), Object.assign(el("span", "key k-def"), {textContent:"การตั้งการ์ด"}));
+  wrap.append(legend, svg);
+  const s0 = states[0], s1 = states[states.length - 1];
+  const tbl = el("details", "state-table"); tbl.append(el("summary", null, "ดูค่าสภาวะทั้งหมด"));
+  const t = el("table"); const hr = el("tr");
+  for (const h of ["", "ความไว้ใจ", "ความวิตกกังวล", "การตั้งการ์ด", "ความเข้าใจตนเอง"]) hr.append(el("th", null, h));
+  t.append(hr);
+  for (const [lab, s] of [["เริ่มต้น", s0], ["จบเซสชัน", s1]]){
+    const tr = el("tr"); tr.append(el("th", null, lab));
+    for (const k of ["trust", "anxiety", "defensiveness", "insight"]) tr.append(el("td", null, String(s[k])));
+    t.append(tr);
+  }
+  tbl.append(t); wrap.append(tbl);
+  return wrap;
+}
+
 function renderFeedback(r){
   const fb = $("feedback"); fb.textContent = "";
   const head = el("div", "fb-head");
-  head.append(el("h2", null, "ผลประเมินการฝึก"), el("p", "overall", String(r?.overall || "")));
+  const titleRow = el("div", "fb-title");
+  titleRow.append(el("h2", null, "ผลประเมินการฝึก"));
+  const pr = el("button", "btn plain no-print", "บันทึกเป็น PDF"); pr.type = "button"; pr.onclick = () => window.print();
+  titleRow.append(pr);
+  head.append(titleRow, el("p", "print-only meta-line", `${current.name} · ${new Date().toLocaleString("th-TH")}`), el("p", "overall", String(r?.overall || "")));
   fb.append(head);
+
+  // 9 สมรรถนะ
   const sc = el("div", "scores");
-  for (const s of (Array.isArray(r?.scores) ? r.scores : [])){
+  for (const s of (r?.scores || [])){
     const n = Math.max(0, Math.min(5, Math.round(Number(s.score) || 0)));
     const card = el("div", "score");
     card.append(el("span", "sk", String(s.skill || "")));
@@ -495,26 +684,72 @@ function renderFeedback(r){
     sc.append(card);
   }
   fb.append(sc);
+
   if (r?.risk){ const rb = el("div", "riskbox"); rb.append(el("b", null, "การประเมินความเสี่ยง  "), document.createTextNode(String(r.risk))); fb.append(rb); }
+
+  // ขั้นของเซสชัน
+  const stw = el("div", "sec"); stw.append(el("h3", null, "โครงสร้างเซสชัน"));
+  const stl = el("div", "stages");
+  for (const s of (r?.stages || [])){
+    const it = el("div", "stage " + (s.done ? "done" : "todo"));
+    it.append(el("span", "mark", s.done ? "✓" : "–"), el("b", null, s.stage), el("span", "sn", s.note || (s.done ? "ทำแล้ว" : "ยังไม่ได้ทำ")));
+    stl.append(it);
+  }
+  stw.append(stl); fb.append(stw);
+
+  // ข้อผิดพลาดที่พบบ่อย
+  if ((r?.failures || []).length){
+    const fw = el("div", "sec"); fw.append(el("h3", null, "จุดที่ควรระวัง"));
+    const ul = el("ul", "fails");
+    for (const f of r.failures){ const li = el("li"); li.append(el("b", null, (FAIL_LABEL[f.type] || f.type) + (f.turn ? ` (T${f.turn})` : "")), document.createTextNode(" " + (f.note || ""))); ul.append(li); }
+    fw.append(ul); fb.append(fw);
+  }
+
+  // สภาวะภายในผู้รับบริการ
+  const ch = stateChart();
+  if (ch){ const cw = el("div", "sec"); cw.append(el("h3", null, "ผู้รับบริการรู้สึกอย่างไรตลอดการคุย"), el("p", "sub", "ค่าจำลองจากวิธีที่คุณคุย ความไว้ใจที่สูงขึ้นทำให้ผู้รับบริการเล่าเรื่องที่ซ่อนอยู่")); cw.append(ch); fb.append(cw); }
+
   const cols = el("div", "cols");
   const a = el("div"); a.append(el("h3", null, "ทำได้ดี"));
   const ul = el("ul", "good"); for (const s of (r?.strengths || [])) ul.append(el("li", null, String(s))); a.append(ul);
   const b = el("div"); b.append(el("h3", null, "ยังไม่ได้เปิดเผย"));
   const ul2 = el("ul", "miss"); for (const s of (r?.missed || [])) ul2.append(el("li", null, String(s))); b.append(ul2);
   cols.append(a, b); fb.append(cols);
-  if ((r?.redo || []).length){
-    const w = el("div", "redo-wrap"); w.append(el("h3", null, "ลองพูดใหม่"));
-    for (const x of r.redo){
-      const box = el("div", "redo");
-      box.append(el("div", "said", String(x.said || "")), el("div", "try", String(x.try || "")));
-      if (x.why) box.append(el("span", "why", String(x.why)));
-      w.append(box);
+
+  if (r?.formulation){ const fo = el("div", "sec"); fo.append(el("h3", null, "สมมติฐานเบื้องต้น"), el("p", "body", r.formulation), el("p", "fine", "เป็นสมมติฐานเพื่อการเรียนรู้ ไม่ใช่การวินิจฉัย")); fb.append(fo); }
+
+  // ทบทวนบทสนทนาพร้อมคำอธิบายรายข้อความ
+  const ann = new Map((r?.annotations || []).map(a => [a.turn, a]));
+  const rp = el("div", "sec"); rp.append(el("h3", null, "ทบทวนบทสนทนา"), el("p", "sub", "กดที่ป้ายเพื่อดูคำอธิบายของแต่ละข้อความ"));
+  const lg = el("div", "replay");
+  let n = 0;
+  for (const t of turns){
+    if (t.role === "assistant"){ lg.append(el("div", "rp client", t.content)); continue; }
+    n++;
+    const row = el("div", "rp me");
+    row.append(el("span", "tn", "T" + n), el("div", "rp-text", t.content));
+    const a = ann.get(n);
+    if (a && (a.tags.length || a.note)){
+      const det = el("details", "rp-note");
+      const sm = el("summary");
+      for (const tg of a.tags){ const [lab, cls] = TAG_LABEL[tg] || [tg, "t-gray"]; sm.append(el("span", "tag " + cls, lab)); }
+      if (!a.tags.length) sm.append(el("span", "tag t-gray", "คำอธิบาย"));
+      det.append(sm, el("p", null, a.note || ""));
+      row.append(det);
     }
-    fb.append(w);
+    lg.append(row);
   }
-  fb.append(el("p", "fine", "ผลประเมินนี้สร้างโดย AI เพื่อการเรียนรู้ อาจคลาดเคลื่อนได้ ควรปรึกษาอาจารย์หรือผู้คุมการฝึกประกอบ"));
+  rp.append(lg); fb.append(rp);
+
+  // คำถามทบทวนตนเอง (debrief)
+  if ((r?.reflection || []).length){
+    const rf = el("div", "sec debrief"); rf.append(el("h3", null, "คำถามทบทวนตัวเอง"), el("p", "sub", "ใช้คุยกับอาจารย์หรือเพื่อนในกลุ่มฝึก"));
+    const ol = el("ol"); for (const q of r.reflection) ol.append(el("li", null, q)); rf.append(ol); fb.append(rf);
+  }
+
+  fb.append(el("p", "fine", "ผลประเมินนี้สร้างโดย AI เพื่อการเรียนรู้ อาจคลาดเคลื่อนได้ และไม่ใช่การรับรองทางวิชาชีพ ควรทบทวนร่วมกับอาจารย์หรือผู้คุมการฝึก"));
   if (config.stored) fb.append(surveyForm());
-  const foot = el("div", "fb-foot");
+  const foot = el("div", "fb-foot no-print");
   const left = remaining();
   const btn = el("button", "btn big", left > 0 ? `เริ่มรอบใหม่ (เหลือ ${left} รอบ)` : "วันนี้ฝึกครบแล้ว"); btn.type = "button"; btn.disabled = left <= 0;
   btn.onclick = () => { start(); $("log").scrollIntoView({behavior:"smooth", block:"center"}); $("input").focus({preventScroll:true}); };
@@ -535,7 +770,7 @@ function question(title, control, ends){
   return f;
 }
 function surveyForm(){
-  const form = el("form", "survey"); form.id = "survey";
+  const form = el("form", "survey no-print"); form.id = "survey";
   form.append(el("h3", null, "ช่วยเราพัฒนาห้องซ้อม"), el("p", "sub", "ใช้เวลาไม่ถึงหนึ่งนาที คำตอบของคุณไม่ระบุตัวตน"));
   form.append(
     question("โดยรวมคุณพอใจห้องซ้อมนี้แค่ไหน", seg("rating", ["1","2","3","4","5"]), ["ไม่พอใจ", "พอใจมาก"]),
@@ -556,7 +791,7 @@ function surveyForm(){
     sb.disabled = true; msg.textContent = "กำลังส่ง…";
     try{
       await api("/api/survey", {caseId: current.id, rating: val("rating"), realistic: val("realistic"), useAgain: val("useAgain"), pay: val("pay"), role: val("role"), comment: ta.value});
-      form.replaceWith(el("div", "thanks", "ขอบคุณสำหรับความเห็นค่ะ เราจะนำไปพัฒนาห้องซ้อมให้ดีขึ้น"));
+      form.replaceWith(el("div", "thanks no-print", "ขอบคุณสำหรับความเห็นค่ะ เราจะนำไปพัฒนาห้องซ้อมให้ดีขึ้น"));
     }catch(err){
       sb.disabled = false; msg.textContent = "ส่งไม่สำเร็จ ลองอีกครั้ง";
     }
@@ -584,6 +819,8 @@ $("input").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shif
 $("input").addEventListener("input", (e) => { e.target.style.height = "auto"; e.target.style.height = Math.min(140, e.target.scrollHeight) + "px"; });
 $("reset").onclick = () => { if (!busy) start(); };
 $("fbBtn").onclick = feedback;
+$("supBtn").onclick = supervise;
+window.addEventListener("beforeprint", () => document.querySelectorAll("#feedback details").forEach(d => d.open = true));
 
 start();
 if (!consented) showConsent();
