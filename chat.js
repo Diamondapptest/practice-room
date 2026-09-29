@@ -60,8 +60,24 @@ export default async function handler(req, res) {
 
   try {
     const { text } = await callGemini({ system: RULES(c, cur), contents, json: true, temperature: 0.9, maxTokens: 4096, think: "low" });
-    const out = parseJson(text);
-    const reply = String(out?.reply || (out ? "" : text)).trim();
+    let out = parseJson(text);
+    if (!out) {
+      // โมเดลบางครั้งส่ง JSON ที่ปิดไม่ครบ ดึงคำพูดและสภาวะออกมาทีละช่องแทน ไม่ให้โค้ดดิบหลุดไปถึงผู้ฝึก
+      const m = String(text).match(/"reply"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+      if (m) {
+        let reply = m[1];
+        try { reply = JSON.parse(`"${m[1]}"`); } catch {}
+        const st = {};
+        for (const k of ["trust", "anxiety", "defensiveness", "insight"]) {
+          const v = String(text).match(new RegExp(`"${k}"\\s*:\\s*(\\d+)`));
+          if (v) st[k] = Number(v[1]);
+        }
+        out = { reply, state: st };
+      } else if (!/^\s*[{\[]/.test(text)) {
+        out = { reply: text };
+      }
+    }
+    const reply = String(out?.reply || "").trim();
     if (!reply) throw { status: 502, code: "empty" };
     const next = clampState(out?.state, cur);
     // จำกัดการเปลี่ยนไม่เกิน 15 ต่อเทิร์น ตามกติกา
